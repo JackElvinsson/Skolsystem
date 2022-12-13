@@ -2,10 +2,15 @@
 package courses;
 //
 
+import person.Student;
+import person.Teacher;
+
+import java.util.List;
+
 public interface Course {
 
     String getName();
-    void getTeacher();
-    void getStudents();
+    Teacher getTeacher();
+    List<Student> getStudentList();
 
 }

@@ -2,9 +2,25 @@
 package courses;
 //
 
+import person.Student;
+import person.Teacher;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Math implements Course {
 
     String name = "Matematik";
+    List<Student> studentList = new ArrayList<>();
+    Teacher teacher;
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 
     @Override
     public String getName() {
@@ -13,11 +29,14 @@ public class Math implements Course {
     }
 
     @Override
-    public void getTeacher() {
+    public Teacher getTeacher() {
+        return teacher;
     }
 
     @Override
-    public void getStudents() {
+    public List<Student> getStudentList() {
+        return studentList;
     }
+
 
 }

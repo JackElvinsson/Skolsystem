@@ -1,15 +1,12 @@
 
 import courses.Course;
 import courses.CourseFactory;
-import courses.English;
-import person.Person;
 import person.PersonFactory;
 import person.Student;
 import person.Teacher;
 //
 
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -52,6 +49,7 @@ public class SchoolSystem {
             System.out.println(course.getName());
         }
 
+//----------------------------------- START -------------------------------------------------
 
         System.out.println("Välkommen till skolsystemet!\n" +
                 "Skriv \"1\" om du är en lärare, \"2\" om du är en elev eller \"0\" för att avsluta");
@@ -65,56 +63,33 @@ public class SchoolSystem {
 
             ID = input;
 
-        while (input != 0) {
+//------------------------------- STARTING LOOP -----------------------------------------------
 
-                switch (input) {
+            while (input != 0) {
 
-                    /**
-                     * Alternativ "1" - Lärarterminalen
-                     */
-                    case 1 -> {
-                        System.out.println("""
-                                ** Lärarterminalen **
+                /**
+                 * Alternativ "1" - Lärarterminalen
+                 */
 
-                                Vad vill du göra?
-                                Skriv en siffra för att komma till respektive meny:
-                                                           
-                                "1" - Se kurser.
-                                "2" - Se Lärarlista.
-                                "3" - Se Elevlista.
-                                "0" - Avsluta.""");
+                if (ID == 1) {
+                    seeTeacherTerminal();
 
-                        input = scanner.nextInt();
-
-                        teacherOptions();
-
-                    }
 
                     /**
                      * Alternativ "2" - Elevterminalen
                      */
-                    case 2 -> {
-                        System.out.println("""
-                                ** Elevterminalen **
-                                                                
-                                Vad vill du göra?
-                                Skriv en siffra för att komma till respektive meny
-                                                                
-                                "1" - Se Kurser.
-                                "2" - Se Lärarlista.
-                                "3" - Se Elevlista.
-                                "0" - Avsluta.""");
 
-                        input = scanner.nextInt();
-
-                        studentOptions();
-                    }
+                } else if (ID == 2) {
+                    seeStudentTerminal();
                 }
             }
         }
+//---------------------------- SYSTEM EXIT --------------------------------------------------
         System.out.println("Systemet avslutas");
         System.exit(0);
     }
+//----------------------------- METHODS -----------------------------------------------------
+
 
     public ArrayList<Course> getCourseList() {
         return courseList;
@@ -128,27 +103,49 @@ public class SchoolSystem {
         return studentList;
     }
 
-    public void teacherOptions(){
-        switch (input) {
-            case 1:
-                seeCourses();
+    public void seeTeacherTerminal() {
+        System.out.println("""
+                ** Lärarterminalen **
 
-            case 2:
-                seeTeachers(teacherList);
+                Vad vill du göra?
+                Skriv en siffra för att komma till respektive meny:
+                                           
+                "1" - Se kurser.
+                "2" - Se Lärarlista.
+                "3" - Se Elevlista.
+                "0" - Avsluta.""");
 
-            case 3:
-                seeStudents(studentList);
+        input = scanner.nextInt();
 
+        if (input < 0 || input > 3) {
+            System.out.println("Fel vid inmatning. Försök igen\n");
 
+        } else {
+
+            while (input != 0) {
+                seeTeacherOptions();
+            }
         }
     }
-    public void seeCourses(){
+    public void seeTeacherOptions() {
+
+        if (input == 1) {
+            seeCourses();
+
+        } else if (input == 2) {
+            seeTeachers(teacherList);
+
+        } else if (input == 3) {
+            seeStudents(studentList);
+        }
+    }
+    public void seeCourses() {
 
         System.out.println("""
-                                        ** Kurser **
+                ** Kurser **
 
-                                        Skriv en siffra för att välja respektiva kurs:
-                                        """);
+                Skriv en siffra för att välja respektive kurs:
+                """);
 
         // Skriver ut alla ämnen som för tillfället ligger i listan
         for (int i = 0; i < courseList.size(); i++) {
@@ -159,15 +156,29 @@ public class SchoolSystem {
 
         input = scanner.nextInt();
 
-        //Switch-case med alla olika ämnen
-        courseOptions();
+        if (input < 0 || input > 3) {
+            System.out.println("Fel vid inmatning. Försök igen\n");
+
+        } else {
+            seeCourseOptions();
+        }
     }
-    public void courseOptions(){
-        switch (input){
-            //Engelska
-            case 1: seeEnglish();
-            case 2: seeHistory();
-            case 3: seeMath();
+    public void seeCourseOptions() {
+        if (input == 1) {
+
+            seeEnglish();
+            input = 20;
+
+        } else if (input == 2) {
+
+            seeHistory();
+            input = 20;
+
+        } else if (input == 3) {
+
+            seeMath();
+            input = 20;
+
         }
     }
     public void seeEnglish() {
@@ -175,9 +186,9 @@ public class SchoolSystem {
         if (ID == 1) {
             System.out.println("""
                     ** Engelska **
-                    
+                                        
                     --Visar namn på lärare som undervisar--
-                    
+                                        
                     --Visar elever som går denna kurs--
 
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -191,18 +202,18 @@ public class SchoolSystem {
                     ** Engelska **
 
                     --Visar namn på lärare som undervisar--
-                    
+                                        
                     --Visar elever som går denna kurs--""");
 
         }
     }
-    public void seeHistory(){
+    public void seeHistory() {
         if (ID == 1) {
             System.out.println("""
                     ** Historia **
-                    
+                                        
                     --Visar namn på lärare som undervisar--
-                    
+                                        
                     --Visar elever som går denna kurs--
 
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -216,20 +227,20 @@ public class SchoolSystem {
                     ** Historia **
 
                     --Visar namn på lärare som undervisar--
-                    
+                                        
                     --Visar elever som går denna kurs--""");
 
         }
     }
-    public void seeMath(){
+    public void seeMath() {
         if (ID == 1) {
             System.out.println("""
                     ** Matematik **
 
                     --Visar namn på lärare som undervisar--
-                    
+                                        
                     --Visar elever som går denna kurs--
-                    
+                                        
                     Skriv en siffra för att välja välja vad du vill göra:
                                     
                     "1" - Ta bort en elev.
@@ -241,17 +252,33 @@ public class SchoolSystem {
                     ** Matematik **
 
                     --Visar namn på lärare som undervisar--
-                    
+                                        
                     --Visar elever som går denna kurs--""");
         }
     }
-    public void seeTeachers(List<Teacher> teacherList){
+    public void seeTeachers(List<Teacher> teacherList) {
         System.out.println("** Lärarlista **"); //TODO: Visa befintliga lärare
     }
-    public void seeStudents(List<Student> studentList){
+    public void seeStudents(List<Student> studentList) {
         System.out.println("** Elevlista **"); //TODO: Visa befintliga elever
     }
-    public void studentOptions(){
+    public void seeStudentTerminal() {
+        System.out.println("""
+                ** Elevterminalen **
+                                                
+                Vad vill du göra?
+                Skriv en siffra för att komma till respektive meny
+                                                
+                "1" - Se Kurser.
+                "2" - Se Lärarlista.
+                "3" - Se Elevlista.
+                "0" - Avsluta.""");
+
+        input = scanner.nextInt();
+
+        seeStudentOptions();
+    }
+    public void seeStudentOptions() {
         switch (input) {
             case 1:
                 seeCourses();
@@ -263,6 +290,21 @@ public class SchoolSystem {
                 seeStudents(studentList);
         }
     }
+
+    public void removeStudentFromCourse(List<Course> courseList, Student student){}
+    public void addStudentToCourse(List<Course> courseList, Student student){}
+    public void removeTeacherFromCourse(){}
+    public void addTeacherToCourse(){}
+    public void printCourseStudents(List<Course> courseList){}
+    public void printCourseTeacher(){}
+    public void printStudentCourseList(){}
+    public void printTeacherCourseList(){}
+
+
+
+
+
+
 
     public static void main(String[] args) {
         new SchoolSystem();
