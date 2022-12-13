@@ -40,16 +40,6 @@ public class SchoolSystem {
         courseFactory.createCourse("HISTORY", courseList);
         courseFactory.createCourse("MATH", courseList);
 
-        for (Teacher teacher : teacherList) {
-            System.out.println(teacher.getName());
-        }
-        for (Student student : studentList) {
-            System.out.println(student.getName());
-        }
-        for (Course course : courseList) {
-            System.out.println(course.getName());
-        }
-
 //----------------------------------- START -------------------------------------------------
 
         System.out.println(ANSI_RESET + "Välkommen till skolsystemet!\n" +
@@ -92,17 +82,17 @@ public class SchoolSystem {
 //----------------------------- METHODS -----------------------------------------------------
 
 
-    public ArrayList<Course> getCourseList() {
-        return courseList;
-    }
-
-    public ArrayList<Teacher> getTeacherList() {
-        return teacherList;
-    }
-
-    public ArrayList<Student> getStudentList() {
-        return studentList;
-    }
+//    public ArrayList<Course> getCourseList() {
+//        return courseList;
+//    }
+//
+//    public ArrayList<Teacher> getTeacherList() {
+//        return teacherList;
+//    }
+//
+//    public ArrayList<Student> getStudentList() {
+//        return studentList;
+//    }
 
     public void seeTeacherTerminal() {
         System.out.println(ANSI_RESET + """
@@ -245,6 +235,93 @@ public class SchoolSystem {
         }
     }
 
+    public void seeHistory() {
+        if (ID == 1) {
+            System.out.println(ANSI_RESET + "** Historia **\n");
+
+            System.out.println(ANSI_RESET + "Lärare: ");
+            printCourseTeacher(courseList, "Historia");
+
+            System.out.println(ANSI_RESET + "\nElever: ");
+            printCourseStudents(courseList, "Historia");
+
+            System.out.println(ANSI_RESET + """
+                    Skriv en siffra för att välja välja vad du vill göra:
+                                    
+                    "1" - Ta bort en elev.
+                    "2" - Lägg till en elev.
+                    "3" - Ta bort lärare.
+                    "4" - Lägg till lärare.
+                    "5" - Backa.
+                    "0" - Avsluta.""");
+
+
+            input = Integer.parseInt(scanner.nextLine());
+
+            if (input < 0 || input > 5) {
+                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+
+            } else {
+                loadSelectedCourseAlternatives("Historia");
+            }
+        } else {
+            System.out.println(ANSI_RESET + "** Historia **\n");
+
+            printCourseTeacher(courseList, "Historia");
+            printCourseStudents(courseList, "Historia");
+
+            System.out.println(ANSI_RESET + """
+                    Skriv en siffra för att välja välja vad du vill göra:
+                                        
+                    "1" - Backa.
+                    "2" - Avsluta.""");
+
+        }
+    }
+
+    public void seeMath() {
+        if (ID == 1) {
+            System.out.println(ANSI_RESET + "** Matematik **\n");
+
+            System.out.println(ANSI_RESET + "Lärare: ");
+            printCourseTeacher(courseList, "Matematik");
+
+            System.out.println(ANSI_RESET + "\nElever: ");
+            printCourseStudents(courseList, "Matematik");
+
+            System.out.println(ANSI_RESET + """
+                    Skriv en siffra för att välja välja vad du vill göra:
+                                    
+                    "1" - Ta bort en elev.
+                    "2" - Lägg till en elev.
+                    "3" - Ta bort lärare.
+                    "4" - Lägg till lärare.
+                    "5" - Backa.
+                    "0" - Avsluta.""");
+
+
+            input = Integer.parseInt(scanner.nextLine());
+
+            if (input < 0 || input > 5) {
+                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+
+            } else {
+                loadSelectedCourseAlternatives("Matematik");
+            }
+        } else {
+            System.out.println(ANSI_RESET + "** Matematik **\n");
+
+            printCourseTeacher(courseList, "Matematik");
+            printCourseStudents(courseList, "Matematik");
+
+            System.out.println(ANSI_RESET + """
+                    Skriv en siffra för att välja välja vad du vill göra:
+                                        
+                    "1" - Backa.
+                    "2" - Avsluta.""");
+        }
+    }
+
     public void loadSelectedCourseAlternatives(String courseName) {
         if (input == 1) {
 
@@ -281,69 +358,6 @@ public class SchoolSystem {
         } else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
             System.exit(0);
-        }
-    }
-
-    public void seeHistory() {
-        if (ID == 1) {
-            System.out.println(ANSI_RESET + """
-                    ** Historia **
-                                        
-                    --Visar namn på lärare som undervisar--
-                                        
-                    --Visar elever som går denna kurs--
-
-                    Skriv en siffra för att välja välja vad du vill göra:
-                                    
-                    "1" - Ta bort en elev.
-                    "2" - Lägg till en elev.
-                    "3" - Ta bort lärare.
-                    "4" - Lägg till lärare.
-                    "5" - Backa.
-                    "0" - Avsluta.""");
-        } else {
-            System.out.println(ANSI_RESET + """
-                    ** Historia **
-
-                    --Visar namn på lärare som undervisar--
-                                        
-                    --Visar elever som går denna kurs--
-                                        
-                    Skriv en siffra för att välja välja vad du vill göra:
-                                        
-                    "1" - Backa.
-                    "2" - Avsluta.""");
-
-        }
-    }
-
-    public void seeMath() {
-        if (ID == 1) {
-            System.out.println("** Matematik **\n");
-
-            printCourseTeacher(courseList, "Matematik");
-            printCourseStudents(courseList, "Matematik");
-
-            System.out.println(ANSI_RESET + """
-                    Skriv en siffra för att välja välja vad du vill göra:
-                                    
-                    "1" - Ta bort en elev.
-                    "2" - Lägg till en elev.
-                    "3" - Ta bort lärare.
-                    "4" - Lägg till lärare.
-                    "5" - Backa.
-                    "0" - Avsluta.""");
-        } else {
-            System.out.println("** Matematik **\n");
-
-            printCourseTeacher(courseList, "Matematik");
-            printCourseStudents(courseList, "Matematik");
-
-            System.out.println("""
-                    Skriv en siffra för att välja välja vad du vill göra:
-                                        
-                    "1" - Backa.
-                    "2" - Avsluta.""");
         }
     }
 
