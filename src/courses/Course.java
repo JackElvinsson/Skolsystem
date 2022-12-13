@@ -12,5 +12,5 @@ public interface Course {
     String getName();
     Teacher getTeacher();
     List<Student> getStudentList();
-
+    void setTeacher(Teacher teacher);
 }
