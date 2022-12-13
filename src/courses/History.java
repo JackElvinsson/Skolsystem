@@ -4,6 +4,12 @@ package courses;
 
 public class History implements Course {
 
+    String name = "Historia";
+
+    @Override
+    public String getName() {
+        return name;
+    }
 
     @Override
     public void getTeacher() {
@@ -12,4 +18,5 @@ public class History implements Course {
     @Override
     public void getStudents() {
     }
+
 }

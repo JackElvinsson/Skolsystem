@@ -4,6 +4,13 @@ package courses;
 
 public class Math implements Course {
 
+    String name = "Matematik";
+
+    @Override
+    public String getName() {
+
+        return name;
+    }
 
     @Override
     public void getTeacher() {
@@ -12,4 +19,5 @@ public class Math implements Course {
     @Override
     public void getStudents() {
     }
+
 }

@@ -4,6 +4,14 @@ package courses;
 
 public class English implements Course {
 
+    String name = "Engelska";
+
+
+    @Override
+    public String getName() {
+
+        return name;
+    }
 
     @Override
     public void getTeacher() {
@@ -12,4 +20,5 @@ public class English implements Course {
     @Override
     public void getStudents() {
     }
+
 }
