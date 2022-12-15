@@ -43,7 +43,7 @@ public class SchoolSystem {
             while (input != 0) {
 
                 /**
-                 * Alternativ "1" - Administratörterminalen
+                 * Alternativ "1" - Administratörsterminalen
                  */
 
                 if (ID == 1) {
@@ -67,7 +67,7 @@ public class SchoolSystem {
 
     public void seeAdminPanel() {
         System.out.println(ANSI_RESET + """
-                ** Administratörterminalen **
+                ** Administratörsterminalen **
 
                 Vad vill du göra?
                 Skriv en siffra för att komma till respektive meny:
@@ -419,7 +419,7 @@ public class SchoolSystem {
         Teacher teacher = DAO.getTeacher(stringInput);
 
         if (DAO.getTeacher(stringInput) != null) {
-            System.out.println("*** Infromation om " + teacher.getName() + " ***\n");
+            System.out.println("*** Information om " + teacher.getName() + " ***\n");
             System.out.println("Namn: " + teacher.getName() + "\nID: " + teacher.getPID() + "\n");
 
             System.out.println("Undervisar i: ");

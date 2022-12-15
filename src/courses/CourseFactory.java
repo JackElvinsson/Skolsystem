@@ -1,26 +1,14 @@
 
 package courses;
 //
-
-import java.util.List;
-
 public class CourseFactory {
-    public void createCourse(String courseType, List<Course> courseList) {
-        if (courseType.equalsIgnoreCase("HISTORY")) {
+    public Course createCourse(String courseType) {
 
-            courseList.add(new History());
-        }
-        else if (courseType.equalsIgnoreCase("MATH")) {
-
-            courseList.add(new Math());
-        }
-        else if (courseType.equalsIgnoreCase("ENGLISH")) {
-
-            courseList.add(new English());
-        }
-        else {
-            System.err.println("Couldn't create course.");
-        }
-
+        return switch(courseType.toUpperCase()) {
+            case "ENGLISH" -> new English();
+            case "HISTORY" -> new History();
+            case "MATH" -> new Math();
+            default -> null;
+        };
     }
 }

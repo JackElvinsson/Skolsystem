@@ -1,6 +1,8 @@
 package database;
 
 import courses.Course;
+import courses.CourseFactory;
+import person.PersonFactory;
 import person.Student;
 import person.Teacher;
 
@@ -17,8 +19,8 @@ public class DataAccessObject {
     private final ArrayList<Teacher> teacherList;
     private final HashSet<Enrollment> enrollmentSet;
     
-    private final PersonFactory2 personFactory;
-    private final CourseFactory2 courseFactory;
+    private final PersonFactory personFactory;
+    private final CourseFactory courseFactory;
 
     public DataAccessObject() {
 
@@ -27,8 +29,8 @@ public class DataAccessObject {
         teacherList = new ArrayList<>();
         enrollmentSet = new HashSet<>();
 
-        personFactory = new PersonFactory2();
-        courseFactory = new CourseFactory2();
+        personFactory = new PersonFactory();
+        courseFactory = new CourseFactory();
 
     }
     public void initiate() {
