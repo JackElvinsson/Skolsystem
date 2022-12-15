@@ -2,9 +2,9 @@
 import database.DataAccessObject;
 import person.Student;
 import person.Teacher;
-//
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class SchoolSystem {
@@ -19,9 +19,9 @@ public class SchoolSystem {
         DAO = new DataAccessObject();
         DAO.initiate();
 
+        DAO.addCourse("ENGLISH");
         DAO.addCourse("HISTORY");
         DAO.addCourse("MATH");
-        DAO.addCourse("ENGLISH");
 
 //----------------------------------- START -------------------------------------------------
 
@@ -42,11 +42,11 @@ public class SchoolSystem {
             while (input != 0) {
 
                 /**
-                 * Alternativ "1" - Lärarterminalen
+                 * Alternativ "1" - Administratörterminalen
                  */
 
                 if (ID == 1) {
-                    seeTeacherTerminal();
+                    seeAdminPanel();
 
 
                     /**
@@ -64,9 +64,9 @@ public class SchoolSystem {
     }
 //----------------------------- METHODS -----------------------------------------------------
 
-    public void seeTeacherTerminal() {
+    public void seeAdminPanel() {
         System.out.println(ANSI_RESET + """
-                ** Lärarterminalen **
+                ** Administratörterminalen **
 
                 Vad vill du göra?
                 Skriv en siffra för att komma till respektive meny:
@@ -84,12 +84,12 @@ public class SchoolSystem {
         } else {
 
             while (input != 0) {
-                loadTeacherOptions();
+                loadAdminOptions();
             }
         }
     }
 
-    public void loadTeacherOptions() {
+    public void loadAdminOptions() {
 
         if (input == 1) {
             seeCourses();
@@ -151,7 +151,7 @@ public class SchoolSystem {
         } else if (input == 4) {
 
             //Backa
-            seeTeacherTerminal();
+            seeAdminPanel();
 
         } else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
@@ -168,7 +168,7 @@ public class SchoolSystem {
             DAO.printCourseTeacher("Engelska");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            DAO.printCourseStudents("Engelska");
+            printCourseStudents("Engelska");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -193,7 +193,7 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Engelska **\n");
 
             DAO.printCourseTeacher("Engelska");
-            DAO.printCourseStudents("Engelska");
+            printCourseStudents("Engelska");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -212,7 +212,7 @@ public class SchoolSystem {
             DAO.printCourseTeacher("Historia");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            DAO.printCourseStudents("Historia");
+            printCourseStudents("Historia");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -237,7 +237,7 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Historia **\n");
 
             DAO.printCourseTeacher("Historia");
-            DAO.printCourseStudents("Historia");
+            printCourseStudents("Historia");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -256,7 +256,7 @@ public class SchoolSystem {
             DAO.printCourseTeacher("Matematik");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            DAO.printCourseStudents("Matematik");
+            printCourseStudents("Matematik");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -281,7 +281,7 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Matematik **\n");
 
             DAO.printCourseTeacher("Matematik");
-            DAO.printCourseStudents("Matematik");
+            printCourseStudents("Matematik");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -334,6 +334,8 @@ public class SchoolSystem {
 
         System.out.println("** Lärarlista **\n");
 
+        System.out.println("Skriv in ett namn från listan för att se information\n");
+
         DAO.printTeachers();
 
         System.out.println("\"" + (teacherList.size() + 1) + "\" - Backa.");
@@ -343,6 +345,8 @@ public class SchoolSystem {
     public void seeStudents(List<Student> studentList) {
 
         System.out.println("** Elevlista **\n");
+
+        System.out.println("Skriv en siffra för att välja välja ett namn:\n");
 
         DAO.printStudents();
 
@@ -398,7 +402,7 @@ public class SchoolSystem {
 
     public void addStudentToCourse(String studentToAdd, String courseName) {
 
-        DAO.addStudentToCourse(studentToAdd,courseName);
+        DAO.addStudentToCourse(studentToAdd, courseName);
 
         if (courseName.equals("Engelska")) {
             seeEnglish();
@@ -411,7 +415,7 @@ public class SchoolSystem {
 
     public void removeTeacherFromCourse(String teacherToRemove, String courseName) {
 
-        DAO.removeTeacherFromCourse(teacherToRemove,courseName);
+        DAO.removeTeacherFromCourse(teacherToRemove, courseName);
 
         if (courseName.equals("Engelska")) {
             seeEnglish();
@@ -435,7 +439,46 @@ public class SchoolSystem {
         }
     }
 
-    public void printStudentCourseList() {
+    public void printCourseStudents(String courseName) {
+
+        courseName = courseName.trim();
+
+        var courseStudents = DAO.getStudents(courseName);
+        if (courseStudents.isEmpty()) {
+            System.out.println(ANSI_RED + "För tillfället läser inte några elever " + courseName + ".\n");
+        } else {
+            for (String student : courseStudents) {
+                System.out.println(student);
+            }
+            System.out.println();
+        }
+
+//        courseName = courseName.trim();
+//
+//        for (Course course : courseList) {
+//            if (course.getName().equalsIgnoreCase(courseName)) {
+//
+//                if (course.getStudentList().size() == 0) {
+//                    System.out.println(ANSI_RED + "För tillfället läser inte några elever " + courseName + ".");
+//
+//                } else {
+//                    for (int j = 0; j < course.getStudentList().size(); j++) {
+//                        System.out.println(course.getStudentList().get(j).getName());
+//                    }
+//                }
+//                System.out.println();
+//            }
+//        }
+    }
+
+
+    public void printStudentCourseList(String student) {
+        var courses = DAO.getStudentCourses(student);
+        for (String course : courses) {
+            System.out.println(course);
+        }
+        System.out.println();
+
     }
 
     public void printTeacherCourseList() {

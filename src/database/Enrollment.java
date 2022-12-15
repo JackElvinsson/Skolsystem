@@ -1,8 +1,5 @@
 package database;
 
-import courses.Course;
-import person.Student;
-
 public class Enrollment {
     private String studentName;
     private String courseName;
