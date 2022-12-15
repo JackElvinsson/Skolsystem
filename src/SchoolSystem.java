@@ -1,6 +1,7 @@
 
 import courses.Course;
 import courses.CourseFactory;
+import person.Person;
 import person.PersonFactory;
 import person.Student;
 import person.Teacher;
@@ -20,6 +21,9 @@ public class SchoolSystem {
     private final Scanner scanner = new Scanner(System.in);
     private int input;
     private int ID;
+    String name ="";
+
+    String stringInput = "";
 
     public SchoolSystem() {
 
@@ -93,6 +97,8 @@ public class SchoolSystem {
 //    public ArrayList<Student> getStudentList() {
 //        return studentList;
 //    }
+
+
 
     public void seeTeacherTerminal() {
         System.out.println(ANSI_RESET + """
@@ -371,6 +377,19 @@ public class SchoolSystem {
         }
         System.out.println("\"" + (teacherList.size() + 1) + "\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
+
+        stringInput = scanner.nextLine();
+
+        if(Objects.equals(stringInput, String.valueOf(studentList.size() + 1))){
+            if(ID == 1){
+                seeTeacherTerminal();
+            }else if( ID == 2){
+                seeStudentTerminal();
+            }
+        } else if (stringInput.equals("0")) {
+            System.out.println("Stänger program");
+            System.exit(0);
+        }
     }
 
     public void seeStudents(List<Student> studentList) {
@@ -383,6 +402,54 @@ public class SchoolSystem {
         }
         System.out.println("\"" + (studentList.size() + 1) + "\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
+
+        stringInput = scanner.nextLine();
+
+        if(Objects.equals(stringInput, String.valueOf(studentList.size() + 1))){
+            if(ID == 1){
+                seeTeacherTerminal();
+            }else if( ID == 2){
+                seeStudentTerminal();
+            }
+        } else if (stringInput.equals("0")) {
+            System.out.println("Stänger program");
+            System.exit(0);
+        }
+        else{
+            studentInformation();
+        }
+    }
+
+    public void studentInformation(){
+        for (Student student : studentList) {
+            if (stringInput.equalsIgnoreCase(student.getName())) {
+                System.out.println("*** Infromation om " + student.getName() + "****");
+                System.out.println("Namn: " + student.getName() + "\nID: " + student.getPID());
+                if(ID == 1){
+                    seeTeacherTerminal();
+                }else if( ID == 2){
+                    seeStudentTerminal();
+                }
+            } else {
+                System.out.println("Finns ingen information om denna elev");
+            }
+        }
+    }
+
+    public void teacherInformation(){
+        for (Teacher teacher : teacherList) {
+            if (stringInput.equals(teacher.getName())) {
+                System.out.println("*** Infromation om " + teacher.getName() + "****");
+                System.out.println("Namn: " + teacher.getName() + "\nID: " + teacher.getPID());
+                if(ID == 1){
+                    seeTeacherTerminal();
+                }else if( ID == 2){
+                    seeStudentTerminal();
+                }
+            } else {
+                System.out.println("Finns ingen information om denna elev");
+            }
+        }
     }
 
     public void seeStudentTerminal() {
