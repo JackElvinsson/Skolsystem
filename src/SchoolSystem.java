@@ -450,6 +450,7 @@ public class SchoolSystem {
                 System.out.println("Finns ingen information om denna elev");
             }
         }
+        ///hj
     }
 
     public void seeStudentTerminal() {
