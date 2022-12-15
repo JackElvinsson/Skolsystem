@@ -18,9 +18,6 @@ public class English implements Course {
         this.studentList = studentList;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
 
     @Override
     public String getName() {
@@ -36,6 +33,11 @@ public class English implements Course {
     @Override
     public List<Student> getStudentList() {
         return studentList;
+    }
+
+    @Override
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
 

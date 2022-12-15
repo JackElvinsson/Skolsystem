@@ -10,12 +10,12 @@ public class Teacher implements Person {
 
     private final String name;
     private final String personalID;
-    private final ArrayList<Course> courseList;
+    //private final ArrayList<Course> courseList;
 
     public Teacher(String name, String personalID) {
         this.name = name;
         this.personalID = personalID;
-        courseList = new ArrayList<>();
+        //courseList = new ArrayList<>();
     }
 
     @Override
@@ -28,10 +28,10 @@ public class Teacher implements Person {
         return personalID;
     }
 
-    @Override
-    public ArrayList getCourses() {
-        return courseList;
-    }
+    //@Override
+    //public ArrayList getCourses() {
+    //    return courseList;
+    //}
 
 
 }

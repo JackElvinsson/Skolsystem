@@ -8,6 +8,6 @@ public interface Person {
 
     String getName();
     String getPID();
-    ArrayList getCourses();
+    //ArrayList getCourses();
 
 }
