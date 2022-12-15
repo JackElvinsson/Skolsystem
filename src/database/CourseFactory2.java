@@ -9,13 +9,13 @@ import java.util.List;
 
 public class CourseFactory2 {
     public Course createCourse(String courseType) {
-        if (courseType.equalsIgnoreCase("HISTORY")) {
+        if (courseType.equalsIgnoreCase("ENGLISH")) {
             return new History();
         }
-        else if (courseType.equalsIgnoreCase("MATH")) {
+        else if (courseType.equalsIgnoreCase("HISTORY")) {
             return new Math();
         }
-        else if (courseType.equalsIgnoreCase("ENGLISH")) {
+        else if (courseType.equalsIgnoreCase("MATH")) {
             return new English();
         }
         else {

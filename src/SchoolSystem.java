@@ -13,6 +13,7 @@ public class SchoolSystem {
     private final Scanner scanner = new Scanner(System.in);
     private int input;
     private int ID;
+    private String stringInput = "";
 
     public SchoolSystem() {
 
@@ -340,6 +341,21 @@ public class SchoolSystem {
 
         System.out.println("\"" + (teacherList.size() + 1) + "\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
+
+        stringInput = scanner.nextLine();
+
+        if (Objects.equals(stringInput, String.valueOf(teacherList.size() + 1))) {
+            if (ID == 1) {
+                seeAdminPanel();
+            } else if (ID == 2) {
+                seeStudentTerminal();
+            }
+        } else if (stringInput.equals("0")) {
+            System.out.println("Stänger program");
+            System.exit(0);
+        } else {
+            teacherInformation();
+        }
     }
 
     public void seeStudents(List<Student> studentList) {
@@ -352,7 +368,80 @@ public class SchoolSystem {
 
         System.out.println("\"" + (studentList.size() + 1) + "\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
+
+        stringInput = scanner.nextLine();
+
+        if (Objects.equals(stringInput, String.valueOf(studentList.size() + 1))) {
+            if (ID == 1) {
+                seeAdminPanel();
+            } else if (ID == 2) {
+                seeStudentTerminal();
+            }
+        } else if (stringInput.equals("0")) {
+            System.out.println("Stänger program");
+            System.exit(0);
+        } else {
+            studentInformation();
+        }
     }
+
+    public void studentInformation() {
+
+        Student student  = DAO.getStudent(stringInput);
+
+        if (stringInput.equalsIgnoreCase(student.getName())) {
+            System.out.println("*** Information om " + student.getName() + " ***\n");
+            System.out.println("Namn: " + student.getName() + "\nID: " + student.getPID() + "\n");
+            System.out.println("Aktiva kurser:");
+            printStudentCourseList(student.getName());
+
+
+        } else {
+            System.out.println("Finns ingen information om denna elev\n");
+        }
+
+        System.out.println("Välj en siffra för att backa eller avsluta\n");
+        System.out.println("\"1\" - Backa\n \"0\" - Avsluta");
+
+        input = Integer.parseInt(scanner.nextLine());
+
+        if (input == 1) {
+            seeStudents(DAO.getStudentList());
+        } else if (input == 0) {
+
+            System.out.println(ANSI_RED + "Systemet avslutas");
+            System.exit(0);
+        }
+    }
+
+    public void teacherInformation() {
+
+        Teacher teacher = DAO.getTeacher(stringInput);
+
+        if (DAO.getTeacher(stringInput) != null) {
+            System.out.println("*** Infromation om " + teacher.getName() + " ***\n");
+            System.out.println("Namn: " + teacher.getName() + "\nID: " + teacher.getPID() + "\n");
+
+            System.out.println("Undervisar i: ");
+            printTeacherCourseList(teacher.getName());
+
+        } else {
+            System.out.println("Finns ingen information om denna lärare\n");
+        }
+        System.out.println("Välj en siffra för att backa eller avsluta:\n");
+        System.out.println("\"1\" - Backa\n\"0\" - Avsluta");
+
+        input = Integer.parseInt(scanner.nextLine());
+
+        if (input == 1) {
+            seeStudents(DAO.getStudentList());
+        } else if (input == 0) {
+
+            System.out.println(ANSI_RED + "Systemet avslutas");
+            System.exit(0);
+        }
+    }
+
 
     public void seeStudentTerminal() {
         System.out.println("""
