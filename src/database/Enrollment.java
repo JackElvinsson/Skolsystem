@@ -4,18 +4,18 @@ import courses.Course;
 import person.Student;
 
 public class Enrollment {
-    private Student student;
-    private Course course;
+    private String studentName;
+    private String courseName;
 
-    public Enrollment(Student student, Course course) {
-        this.student = student;
-        this.course = course;
+    public Enrollment(String studentName, String courseName) {
+        this.studentName = studentName;
+        this.courseName = courseName;
     }
 
-    public Student getStudent() {
-        return student;
+    public String getStudent() {
+        return studentName;
     }
-    public Course getCourse() {
-        return course;
+    public String getCourse() {
+        return courseName;
     }
 }

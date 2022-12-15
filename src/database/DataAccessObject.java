@@ -4,6 +4,9 @@ import courses.Course;
 import person.Student;
 import person.Teacher;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +31,25 @@ public class DataAccessObject {
         courseFactory = new CourseFactory2();
 
     }
+    public void initiate() {
+
+        String temp;
+
+        String file = "src/People.txt";
+        try(BufferedReader buf = new BufferedReader(new FileReader(file))) {
+            while ((temp = buf.readLine()) != null) {
+                String[] fileInput = temp.split(",");
+                var person = personFactory.createPerson(fileInput[0], fileInput[1], fileInput[2]);
+                if (person instanceof Student)
+                    studentList.add((Student) person);
+                else if (person instanceof Teacher)
+                    teacherList.add((Teacher) person);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Student getStudent(String name) {
         for (Student student : studentList) {
             if (student.getName().equalsIgnoreCase(name)) {
@@ -60,21 +82,39 @@ public class DataAccessObject {
     public void addCourse(String name) {
         courseList.add(courseFactory.createCourse(name));
     }
+    public Teacher getTeacher(String name) {
+        for (Teacher teacher :teacherList) {
+            if (teacher.getName().equalsIgnoreCase(name)) {
+                return teacher;
+            }
+        }
+        System.out.println("Kunde inte hitta en elev med namnet: '" + name + "'.");
+        return null;
+    }
 
-    public ArrayList<Student> getStudents(String courseName) {
-        ArrayList<Student> studentList = new ArrayList<>();
+    public void addTeacher(String name, String PID) {
+        if (getTeacher(name) == null) {
+            teacherList.add((Teacher) personFactory.createPerson("Teacher", name, PID));
+            System.out.println(name + " lades till som lärare.");
+        } else {
+            System.err.println("Det finns redan en lärare  med namnet: '" + name + "'");
+        }
+    }
+
+    public ArrayList<String> getStudents(String courseName) {
+        ArrayList<String> studentList = new ArrayList<>();
         for (Enrollment enrollment : enrollmentList) {
-            if (enrollment.getCourse().getName().equalsIgnoreCase(courseName)) {
+            if (enrollment.getCourse().equalsIgnoreCase(courseName)) {
                 studentList.add(enrollment.getStudent());
             }
         }
         return studentList;
     }
 
-    public ArrayList<Course> getStudentCourses(String student) {
-        ArrayList<Course> courses = new ArrayList<>();
+    public ArrayList<String> getStudentCourses(String student) {
+        ArrayList<String> courses = new ArrayList<>();
         for (Enrollment enrollment : enrollmentList) {
-            if (enrollment.getStudent().getName().equalsIgnoreCase(student)) {
+            if (enrollment.getStudent().equalsIgnoreCase(student)) {
                 courses.add(enrollment.getCourse());
             }
         }
@@ -93,10 +133,10 @@ public class DataAccessObject {
     }
 
     public void enrollStudent(Student student, Course course) {
-        enrollmentList.add(new Enrollment(student, course));
+        enrollmentList.add(new Enrollment(student.getName(), course.getName()));
     }
     public void removeEnrollment(String name) {
-        enrollmentList.removeIf(enrollment -> enrollment.getStudent().getName().equalsIgnoreCase(name));
+        enrollmentList.removeIf(enrollment -> enrollment.getStudent().equalsIgnoreCase(name));
     }
 
     public void removeStudent(String name) {
@@ -311,6 +351,7 @@ public class DataAccessObject {
     public ArrayList<Enrollment> getEnrollmentList() {
         return enrollmentList;
     }
+
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
