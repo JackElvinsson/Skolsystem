@@ -1,8 +1,6 @@
 
 import courses.Course;
 import courses.CourseFactory;
-import person.Person;
-import person.PersonFactory;
 import person.Student;
 import person.Teacher;
 //
@@ -15,9 +13,9 @@ import java.util.Scanner;
 
 public class SchoolSystem {
     private final List<Course> courseList = new ArrayList<>();
-    private PersonDatabase pd = new PersonDatabase();
+    private final PersonDatabase pd = new PersonDatabase();
     private final Scanner scanner = new Scanner(System.in);
-    private int input = 20;
+    private int input;
     private int ID;
 
     public SchoolSystem() {
@@ -361,11 +359,11 @@ public class SchoolSystem {
         // Söker efter given kurs i listan av kurser.
         // När kursen hittas kommer vald elev att tas bort från vald kurs om den finns i kurslistan
 
-        for (int i = 0; i < courseList.size(); i++) {
-            if (Objects.equals(courseName, courseList.get(i).getName())) {
-                for (int j = 0; j < courseList.get(i).getStudentList().size(); j++) {
-                    if (courseList.get(i).getStudentList().get(j).getName().equalsIgnoreCase(studentToRemove)) {
-                        courseList.get(i).getStudentList().remove(courseList.get(i).getStudentList().get(j));
+        for (Course course : courseList) {
+            if (Objects.equals(courseName, course.getName())) {
+                for (int j = 0; j < course.getStudentList().size(); j++) {
+                    if (course.getStudentList().get(j).getName().equalsIgnoreCase(studentToRemove)) {
+                        course.getStudentList().remove(course.getStudentList().get(j));
                         break;
                     }
                 }
