@@ -1,19 +1,19 @@
 
 import courses.Course;
 import courses.CourseFactory;
+import database.DataAccessObject;
 import person.PersonFactory;
 import person.Student;
 import person.Teacher;
 //
 
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class SchoolSystem {
 
+    private final DataAccessObject DAO = new DataAccessObject();
     private final ArrayList<Teacher> teacherList = new ArrayList<>();
     private final ArrayList<Student> studentList = new ArrayList<>();
     private final ArrayList<Course> courseList = new ArrayList<>();
@@ -81,19 +81,6 @@ public class SchoolSystem {
     }
 //----------------------------- METHODS -----------------------------------------------------
 
-
-//    public ArrayList<Course> getCourseList() {
-//        return courseList;
-//    }
-//
-//    public ArrayList<Teacher> getTeacherList() {
-//        return teacherList;
-//    }
-//
-//    public ArrayList<Student> getStudentList() {
-//        return studentList;
-//    }
-
     public void seeTeacherTerminal() {
         System.out.println(ANSI_RESET + """
                 ** Lärarterminalen **
@@ -146,10 +133,7 @@ public class SchoolSystem {
                 Skriv en siffra för att välja respektive kurs:
                 """);
 
-        // Skriver ut alla kurser som för tillfället ligger i listan
-        for (int i = 0; i < courseList.size(); i++) {
-            System.out.println("\"" + (i + 1) + "\" - " + courseList.get(i).getName());
-        }
+        DAO.printCourses();
 
         System.out.println("\"4\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
@@ -182,8 +166,10 @@ public class SchoolSystem {
             input = 20;
 
         } else if (input == 4) {
+
             //Backa
             seeTeacherTerminal();
+
         } else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
             System.exit(0);
@@ -196,10 +182,10 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Engelska **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
-            printCourseTeacher(courseList, "Engelska");
+            DAO.printCourseTeacher(courseList, "Engelska");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            printCourseStudents(courseList, "Engelska");
+            DAO.printCourseStudents(courseList, "Engelska");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -223,8 +209,8 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Engelska **\n");
 
-            printCourseTeacher(courseList, "Engelska");
-            printCourseStudents(courseList, "Engelska");
+            DAO.printCourseTeacher(courseList, "Engelska");
+            DAO.printCourseStudents(courseList, "Engelska");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -240,10 +226,10 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Historia **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
-            printCourseTeacher(courseList, "Historia");
+            DAO.printCourseTeacher(courseList, "Historia");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            printCourseStudents(courseList, "Historia");
+            DAO.printCourseStudents(courseList, "Historia");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -267,8 +253,8 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Historia **\n");
 
-            printCourseTeacher(courseList, "Historia");
-            printCourseStudents(courseList, "Historia");
+            DAO.printCourseTeacher(courseList, "Historia");
+            DAO.printCourseStudents(courseList, "Historia");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -284,10 +270,10 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Matematik **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
-            printCourseTeacher(courseList, "Matematik");
+            DAO.printCourseTeacher(courseList, "Matematik");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            printCourseStudents(courseList, "Matematik");
+            DAO.printCourseStudents(courseList, "Matematik");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -311,8 +297,8 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Matematik **\n");
 
-            printCourseTeacher(courseList, "Matematik");
-            printCourseStudents(courseList, "Matematik");
+            DAO.printCourseTeacher(courseList, "Matematik");
+            DAO.printCourseStudents(courseList, "Matematik");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -328,28 +314,28 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "Vilken elev vill du ta bort från kursen?");
 
             String studentToRemove = scanner.nextLine();
-            removeStudentFromCourse(courseList, studentToRemove, courseName);
+            removeStudentFromCourse(studentToRemove, courseName);
 
         } else if (input == 2) {
 
             System.out.println(ANSI_RESET + "Vilken elev vill du lägga till kursen?");
 
             String studentToAdd = scanner.nextLine();
-            addStudentToCourse(courseList, studentToAdd, courseName);
+            addStudentToCourse(studentToAdd, courseName);
 
         } else if (input == 3) {
 
             System.out.println("Vilken Lärare vill du ta bort från kursen?");
 
             String teacherToRemove = scanner.nextLine();
-            removeTeacherFromCourse(courseList, teacherToRemove, courseName);
+            removeTeacherFromCourse(teacherToRemove, courseName);
 
         } else if (input == 4) {
 
             System.out.println("Vilken lärare vill du lägga till kursen?");
 
             String teacherToAdd = scanner.nextLine();
-            addTeacherToCourse(courseList, teacherToAdd, courseName);
+            addTeacherToCourse(teacherToAdd, courseName);
 
         } else if (input == 5) {
 //            input = 20;
@@ -365,10 +351,8 @@ public class SchoolSystem {
 
         System.out.println("** Lärarlista **\n");
 
-        ///Skriver ut alla lärare som för tillfället finns med i listan
-        for (int i = 0; i < teacherList.size(); i++) {
-            System.out.println("\"" + (i + 1) + "\" - " + teacherList.get(i).getName() + ".");
-        }
+        DAO.printTeachers();
+
         System.out.println("\"" + (teacherList.size() + 1) + "\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
     }
@@ -377,10 +361,8 @@ public class SchoolSystem {
 
         System.out.println("** Elevlista **\n");
 
-        //Skriver ut alla elever som för tillfället finns med i listan
-        for (int i = 0; !(i >= studentList.size()); i++) {
-            System.out.println("\"" + (i + 1) + "\" - " + studentList.get(i).getName() + ".");
-        }
+        DAO.printStudents();
+
         System.out.println("\"" + (studentList.size() + 1) + "\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
     }
@@ -418,116 +400,9 @@ public class SchoolSystem {
         }
     }
 
-    public void removeStudentFromCourse(List<Course> courseList, String studentToRemove, String courseName) {
+    public void removeStudentFromCourse(String studentToRemove, String courseName) {
 
-        studentToRemove = studentToRemove.trim();
-
-        // Söker efter given kurs i kurslistan.
-        // När kursen hittas kommer vald elev att tas bort från vald kurs om den finns i kurslistan
-
-        for (Course course : courseList) {
-            if (Objects.equals(courseName, course.getName())) {
-
-                if (course.getStudentList().size() > 0) {
-
-                    for (int j = 0; j < course.getStudentList().size(); j++) {
-                        if (course.getStudentList().get(j).getName().equalsIgnoreCase(studentToRemove)) {
-                            course.getStudentList().remove(course.getStudentList().get(j));
-                            System.out.println(ANSI_RED + studentToRemove + " togs bort ifrån kursen " + courseName + "!\n");
-                            break;
-                        }
-                    }
-
-                } else {
-                    System.out.println(ANSI_RED + "För tillfället läser inte några elever " + courseName);
-                }
-            }
-        }
-        if (courseName.equals("Engelska")) {
-            seeEnglish();
-        } else if (courseName.equals("Historia")) {
-            seeHistory();
-        } else {
-            seeMath();
-        }
-    }
-
-    public void addStudentToCourse(List<Course> courseList, String studentToAdd, String courseName) {
-
-        boolean found = false;
-        studentToAdd = studentToAdd.trim();
-
-        // Söker efter given kurs i kurslistan.
-        // När kursen hittas kollar metoden upp om studenten redan finns med i listan
-        // Om studenten redan finns händer inget, annars läggs den till i kurslistan
-
-        for (Course course : courseList) {
-            if (Objects.equals(courseName, course.getName())) {
-
-                if (course.getStudentList().size() > 0) {
-
-                    for (int j = 0; j < course.getStudentList().size(); j++) {
-                        if (course.getStudentList().get(j).getName().equalsIgnoreCase(studentToAdd)) {
-                            System.out.println(ANSI_RED + studentToAdd + " läser redan " + courseName + "!\n");
-
-                        } else {
-                            for (Student student : studentList) {
-                                if (student.getName().equalsIgnoreCase(studentToAdd)) {
-                                    course.getStudentList().add(student);
-                                    System.out.println(ANSI_GREEN + studentToAdd + " lades till i kursen " + courseName + "!\n");
-                                    j = course.getStudentList().size();
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    break;
-
-
-                } else {
-                    for (Student student : studentList) {
-                        if (student.getName().equalsIgnoreCase(studentToAdd)) {
-                            course.getStudentList().add(student);
-                            System.out.println(ANSI_GREEN + studentToAdd + " lades till i kursen " + courseName + "!\n");
-                        } else {
-                            System.out.println(ANSI_RED + "Hittade ingen elev med namnet " + studentToAdd);
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-        if (courseName.equals("Engelska")) {
-            seeEnglish();
-        } else if (courseName.equals("Historia")) {
-            seeHistory();
-        } else {
-            seeMath();
-        }
-    }
-
-    public void removeTeacherFromCourse(List<Course> courseList, String teacherToRemove, String courseName) {
-
-        teacherToRemove = teacherToRemove.trim();
-
-        // Söker efter given kurs i kurslistan.
-        // När kursen hittas kommer vald lärare att tas bort från vald kurs om den finns i tillagd till kursen
-
-        for (Course course : courseList) {
-            if (Objects.equals(courseName, course.getName())) {
-
-                try {
-                    if (course.getTeacher().getName().equalsIgnoreCase(teacherToRemove)) {
-                        course.setTeacher(null);
-                        System.out.println(ANSI_RED + teacherToRemove + " togs bort ifrån kursen " + courseName + "!\n");
-                        break;
-                    }
-
-                } catch (NullPointerException e) {
-                    System.out.println(ANSI_RED + "För tillfället undervisar ingen lärare kursen " + courseName);
-                }
-            }
-        }
+        DAO.removeStudentFromCourse(studentToRemove, courseName);
 
         if (courseName.equals("Engelska")) {
             seeEnglish();
@@ -538,37 +413,10 @@ public class SchoolSystem {
         }
     }
 
-    public void addTeacherToCourse(List<Course> courseList, String teacherToAdd, String courseName) {
-        teacherToAdd = teacherToAdd.trim();
+    public void addStudentToCourse(String studentToAdd, String courseName) {
 
-        // Söker efter given kurs i kurslistan.
-        // När kursen hittas kollar metoden upp om studenten redan finns med i listan
-        // Om studenten redan finns händer inget, annars läggs den till i kurslistan
+        DAO.addStudentToCourse(studentToAdd,courseName);
 
-        for (Course course : courseList) {
-            if (Objects.equals(courseName, course.getName())) {
-
-                if (course.getTeacher() != null) {
-
-                    System.out.println(ANSI_RED + course.getTeacher().getName() + " Undervisar redan " + courseName + "!\n");
-
-                } else if (course.getTeacher() == null) {
-                    for (Teacher teacher : teacherList) {
-                        if (teacher.getName().equalsIgnoreCase(teacherToAdd)) {
-                            course.setTeacher(teacher);
-                            System.out.println(course.getTeacher().getName());
-                            System.out.println(course.getTeacher().getCourses());
-                            System.out.println(teacherList.get(0).getCourses());
-                            System.out.println(ANSI_GREEN + teacherToAdd + " lades till som lärare i kursen " + courseName + "!\n");
-                            break;
-                        }
-                    }
-                } else {
-                    System.out.println("Kunde inte hitta en lärare med namnet " + teacherToAdd);
-                    break;
-                }
-            }
-        }
         if (courseName.equals("Engelska")) {
             seeEnglish();
         } else if (courseName.equals("Historia")) {
@@ -578,43 +426,29 @@ public class SchoolSystem {
         }
     }
 
-    public void printCourseStudents(List<Course> courseList, String courseName) {
+    public void removeTeacherFromCourse(String teacherToRemove, String courseName) {
 
-        courseName = courseName.trim();
+        DAO.removeTeacherFromCourse(teacherToRemove,courseName);
 
-        for (Course course : courseList) {
-            if (course.getName().equalsIgnoreCase(courseName)) {
-
-                if (course.getStudentList().size() == 0) {
-                    System.out.println(ANSI_RED + "För tillfället läser inte några elever " + courseName + ".");
-
-                } else {
-                    for (int j = 0; j < course.getStudentList().size(); j++) {
-                        System.out.println(course.getStudentList().get(j).getName());
-                    }
-                }
-                System.out.println();
-            }
+        if (courseName.equals("Engelska")) {
+            seeEnglish();
+        } else if (courseName.equals("Historia")) {
+            seeHistory();
+        } else {
+            seeMath();
         }
     }
 
-    public void printCourseTeacher(List<Course> courseList, String courseName) {
-        for (Course course : courseList) {
-            if (course.getName().equalsIgnoreCase(courseName)) {
+    public void addTeacherToCourse(String teacherToAdd, String courseName) {
 
-                try {
-                    if (course.getTeacher().getName() == null) {
-                        //catch
+        DAO.addTeacherToCourse(teacherToAdd,courseName);
 
-                    } else {
-                        System.out.println(course.getTeacher().getName());
-                        break;
-                    }
-
-                } catch (NullPointerException e) {
-                    System.out.println(ANSI_RED + "Det är för tillfället ingen lärare som undervisar i kursen " + courseName + ".");
-                }
-            }
+        if (courseName.equals("Engelska")) {
+            seeEnglish();
+        } else if (courseName.equals("Historia")) {
+            seeHistory();
+        } else {
+            seeMath();
         }
     }
 
