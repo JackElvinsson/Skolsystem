@@ -428,7 +428,9 @@ public class SchoolSystem {
 
     public void addTeacherToCourse(String teacherToAdd, String courseName) {
 
-        DAO.addTeacherToCourse(teacherToAdd,courseName);
+        DAO.addTeacherToCourse(teacherToAdd, courseName);
+
+        //DAO.setTeacher(courseName, teacherToAdd);
 
         if (courseName.equals("Engelska")) {
             seeEnglish();
@@ -481,7 +483,12 @@ public class SchoolSystem {
 
     }
 
-    public void printTeacherCourseList() {
+    public void printTeacherCourseList(String teacher) {
+        var courses = DAO.getTeacherCourses(teacher);
+        for (String course : courses) {
+            System.out.println(course);
+        }
+        System.out.println();
     }
 
     public static final String ANSI_RED = "\u001B[31m";

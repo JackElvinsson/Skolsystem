@@ -15,4 +15,5 @@ public class Enrollment {
     public String getCourse() {
         return courseName;
     }
+
 }
