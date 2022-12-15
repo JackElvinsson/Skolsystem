@@ -1,24 +1,15 @@
 
 package person;
-//
-
-
-import java.util.List;
 
 public class PersonFactory {
 
-    public void createPerson(String personType, String name, String PID, List<Student> studentList, List<Teacher> teacherList) {
-        if (personType.equalsIgnoreCase("STUDENT")) {
+    public Person createPerson(String personType, String name, String PID) {
 
-            studentList.add(new Student(name,PID));
-
-        }
-        else if (personType.equalsIgnoreCase("TEACHER")) {
-
-            teacherList.add(new Teacher(name, PID));
-        }
-        else {
-            System.err.println("Couldn't create person.");
-        }
+        if (personType.equalsIgnoreCase("STUDENT"))
+            return new Student(name,PID);
+        else if (personType.equalsIgnoreCase("TEACHER"))
+            return new Teacher(name, PID);
+        else
+            return null;
     }
 }

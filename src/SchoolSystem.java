@@ -9,18 +9,13 @@ import person.Teacher;
 
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class SchoolSystem {
-
-    private final ArrayList<Teacher> teacherList = new ArrayList<>();
-    private final ArrayList<Student> studentList = new ArrayList<>();
-    private final ArrayList<Course> courseList = new ArrayList<>();
-    private static final ArrayList<Person> teacherList = new ArrayList<>();
-    private static final ArrayList<Person> studentList = new ArrayList<>();
+    private final List<Course> courseList = new ArrayList<>();
     private PersonDatabase pd = new PersonDatabase();
-    public ArrayList<Course> getCourseList() {
-        return courseList;
-    }
     private final Scanner scanner = new Scanner(System.in);
     private int input = 20;
     private int ID;
@@ -28,26 +23,15 @@ public class SchoolSystem {
     public SchoolSystem() {
 
         CourseFactory courseFactory = new CourseFactory();
-        PersonFactory personFactory = new PersonFactory();
-
-        personFactory.createPerson("TEACHER", "Rolf", "1563-03-01", studentList, teacherList);
-        personFactory.createPerson("TEACHER", "Anna", "1563-03-01", studentList, teacherList);
-        personFactory.createPerson("TEACHER", "Kenneth", "1563-03-01", studentList, teacherList);
-        personFactory.createPerson("TEACHER", "Christina", "1563-03-01", studentList, teacherList);
-
-        personFactory.createPerson("STUDENT", "Adam", "2003-01-02", studentList, teacherList);
-        personFactory.createPerson("STUDENT", "Erika", "2003-01-02", studentList, teacherList);
-        personFactory.createPerson("STUDENT", "Ludvig", "2003-01-02", studentList, teacherList);
-        personFactory.createPerson("STUDENT", "Anna", "2003-01-02", studentList, teacherList);
 
         courseFactory.createCourse("ENGLISH", courseList);
         courseFactory.createCourse("HISTORY", courseList);
         courseFactory.createCourse("MATH", courseList);
 
-        for (Teacher teacher : teacherList) {
+        for (Teacher teacher : pd.getAllTechers()) {
             System.out.println(teacher.getName());
         }
-        for (Student student : studentList) {
+        for (Student student : pd.getAllStudens()) {
             System.out.println(student.getName());
         }
         for (Course course : courseList) {
@@ -96,16 +80,8 @@ public class SchoolSystem {
 //----------------------------- METHODS -----------------------------------------------------
 
 
-    public ArrayList<Course> getCourseList() {
+    public List<Course> getCourseList() {
         return courseList;
-    }
-
-    public ArrayList<Teacher> getTeacherList() {
-        return teacherList;
-    }
-
-    public ArrayList<Student> getStudentList() {
-        return studentList;
     }
 
     public void seeTeacherTerminal() {
@@ -140,11 +116,11 @@ public class SchoolSystem {
             input = 20;
 
         } else if (input == 2) {
-            seeTeachers(teacherList);
+            seeTeachers(pd.getAllTechers());
             input = 20;
 
         } else if (input == 3) {
-            seeStudents(studentList);
+            seeStudents(pd.getAllStudens());
             input = 20;
         }
     }
@@ -371,10 +347,10 @@ public class SchoolSystem {
                 seeCourses();
 
             case 2:
-                seeTeachers(teacherList);
+                seeTeachers(pd.getAllTechers());
 
             case 3:
-                seeStudents(studentList);
+                seeStudents(pd.getAllStudens());
         }
     }
 
@@ -405,7 +381,6 @@ public class SchoolSystem {
         for (Student s : allStudens)
             System.out.println(s.getName());
 
-    }
         // Söker efter given kurs i listan av ämnen.
         // När kursen hittas kollar metoden upp om studenten redan finns med i listan
         // Om studenten redan finns händer inget, annars läggs den till i kurslistan
@@ -422,9 +397,9 @@ public class SchoolSystem {
                     }
 
                 } else {
-                    for (int j = 0; j < studentList.size(); j++) {
-                        if (studentList.get(i).getName().equalsIgnoreCase(studentToAdd)) {
-                            courseList.get(i).getStudentList().add(studentList.get(i));
+                    for (int j = 0; j < pd.getAllStudens().size(); j++) {
+                        if (pd.getAllStudens().get(i).getName().equalsIgnoreCase(studentToAdd)) {
+                            courseList.get(i).getStudentList().add(pd.getAllStudens().get(i));
                             break;
                         }
                     }
