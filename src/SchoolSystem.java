@@ -1,44 +1,27 @@
 
-import courses.Course;
-import courses.CourseFactory;
 import database.DataAccessObject;
-import person.PersonFactory;
 import person.Student;
 import person.Teacher;
 //
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class SchoolSystem {
 
-    private final DataAccessObject DAO = new DataAccessObject();
-    private final ArrayList<Teacher> teacherList = new ArrayList<>();
-    private final ArrayList<Student> studentList = new ArrayList<>();
-    private final ArrayList<Course> courseList = new ArrayList<>();
+    private final DataAccessObject DAO;
     private final Scanner scanner = new Scanner(System.in);
     private int input;
     private int ID;
 
     public SchoolSystem() {
 
-        CourseFactory courseFactory = new CourseFactory();
-        PersonFactory personFactory = new PersonFactory();
+        DAO = new DataAccessObject();
+        DAO.initiate();
 
-        personFactory.createPerson("TEACHER", "Rolf", "1563-03-01", studentList, teacherList);
-        personFactory.createPerson("TEACHER", "Anna", "1563-03-01", studentList, teacherList);
-        personFactory.createPerson("TEACHER", "Kenneth", "1563-03-01", studentList, teacherList);
-        personFactory.createPerson("TEACHER", "Christina", "1563-03-01", studentList, teacherList);
-
-        personFactory.createPerson("STUDENT", "Adam", "2003-01-02", studentList, teacherList);
-        personFactory.createPerson("STUDENT", "Erika", "2003-01-02", studentList, teacherList);
-        personFactory.createPerson("STUDENT", "Ludvig", "2003-01-02", studentList, teacherList);
-        personFactory.createPerson("STUDENT", "Anna", "2003-01-02", studentList, teacherList);
-
-        courseFactory.createCourse("ENGLISH", courseList);
-        courseFactory.createCourse("HISTORY", courseList);
-        courseFactory.createCourse("MATH", courseList);
+        DAO.addCourse("HISTORY");
+        DAO.addCourse("MATH");
+        DAO.addCourse("ENGLISH");
 
 //----------------------------------- START -------------------------------------------------
 
@@ -113,11 +96,11 @@ public class SchoolSystem {
             input = 20;
 
         } else if (input == 2) {
-            seeTeachers(teacherList);
+            seeTeachers(DAO.getTeacherList());
             input = 20;
 
         } else if (input == 3) {
-            seeStudents(studentList);
+            seeStudents(DAO.getStudentList());
             input = 20;
         } else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
@@ -182,10 +165,10 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Engelska **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
-            DAO.printCourseTeacher(courseList, "Engelska");
+            DAO.printCourseTeacher("Engelska");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            DAO.printCourseStudents(courseList, "Engelska");
+            DAO.printCourseStudents("Engelska");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -209,8 +192,8 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Engelska **\n");
 
-            DAO.printCourseTeacher(courseList, "Engelska");
-            DAO.printCourseStudents(courseList, "Engelska");
+            DAO.printCourseTeacher("Engelska");
+            DAO.printCourseStudents("Engelska");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -226,10 +209,10 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Historia **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
-            DAO.printCourseTeacher(courseList, "Historia");
+            DAO.printCourseTeacher("Historia");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            DAO.printCourseStudents(courseList, "Historia");
+            DAO.printCourseStudents("Historia");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -253,8 +236,8 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Historia **\n");
 
-            DAO.printCourseTeacher(courseList, "Historia");
-            DAO.printCourseStudents(courseList, "Historia");
+            DAO.printCourseTeacher("Historia");
+            DAO.printCourseStudents("Historia");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -270,10 +253,10 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + "** Matematik **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
-            DAO.printCourseTeacher(courseList, "Matematik");
+            DAO.printCourseTeacher("Matematik");
 
             System.out.println(ANSI_RESET + "\nElever: ");
-            DAO.printCourseStudents(courseList, "Matematik");
+            DAO.printCourseStudents("Matematik");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -297,8 +280,8 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Matematik **\n");
 
-            DAO.printCourseTeacher(courseList, "Matematik");
-            DAO.printCourseStudents(courseList, "Matematik");
+            DAO.printCourseTeacher("Matematik");
+            DAO.printCourseStudents("Matematik");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
@@ -389,10 +372,10 @@ public class SchoolSystem {
             seeCourses();
 
         } else if (input == 2) {
-            seeTeachers(teacherList);
+            seeTeachers(DAO.getTeacherList());
 
         } else if (input == 3) {
-            seeStudents(studentList);
+            seeStudents(DAO.getStudentList());
 
         } else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
@@ -459,7 +442,6 @@ public class SchoolSystem {
     }
 
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
 
 

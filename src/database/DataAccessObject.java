@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class DataAccessObject {
-    public final ArrayList<Course> courseList;
-    public final ArrayList<Student> studentList;
-    public final ArrayList<Teacher> teacherList;
+    private final ArrayList<Course> courseList;
+    private final ArrayList<Student> studentList;
+    private final ArrayList<Teacher> teacherList;
     private final ArrayList<Enrollment> enrollmentList;
     
     private final PersonFactory2 personFactory;
@@ -220,13 +220,16 @@ public class DataAccessObject {
                     for (Teacher teacher : teacherList) {
                         if (teacher.getName().equalsIgnoreCase(teacherToAdd)) {
                             course.setTeacher(teacher);
-                            System.out.println(course.getTeacher().getName());
-                            System.out.println(course.getTeacher().getCourses());
-                            System.out.println(teacherList.get(0).getCourses());
+
+                            //System.out.println(course.getTeacher().getName());
+                            // System.out.println(course.getTeacher().getCourses());
+
+                            System.out.println(getTeacherCourses(teacher.getName()));
                             System.out.println(ANSI_GREEN + teacherToAdd + " lades till som lärare i kursen " + courseName + "!\n");
                             break;
                         }
                     }
+
                 } else {
                     System.out.println("Kunde inte hitta en lärare med namnet " + teacherToAdd);
                     break;
@@ -235,7 +238,7 @@ public class DataAccessObject {
         }
     }
 
-    public void printCourseStudents(List<Course> courseList, String courseName) {
+    public void printCourseStudents(String courseName) {
 
         courseName = courseName.trim();
 
@@ -255,7 +258,7 @@ public class DataAccessObject {
         }
     }
 
-    public void printCourseTeacher(List<Course> courseList, String courseName) {
+    public void printCourseTeacher(String courseName) {
         for (Course course : courseList) {
             if (course.getName().equalsIgnoreCase(courseName)) {
 
@@ -293,19 +296,19 @@ public class DataAccessObject {
         }
     }
 
-    public ArrayList<Student> getAllStudents() {
+    public ArrayList<Student> getStudentList() {
         return studentList;
     }
 
-    public ArrayList<Course> getAllCourses() {
+    public ArrayList<Course> getCourseList() {
         return courseList;
     }
 
-    public ArrayList<Teacher> getAllTeachers() {
+    public ArrayList<Teacher> getTeacherList() {
         return teacherList;
     }
 
-    public ArrayList<Enrollment> getAllEnrollments() {
+    public ArrayList<Enrollment> getEnrollmentList() {
         return enrollmentList;
     }
     public static final String ANSI_RED = "\u001B[31m";
