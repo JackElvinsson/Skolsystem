@@ -3,6 +3,7 @@ import database.DataAccessObject;
 import person.Student;
 import person.Teacher;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class SchoolSystem {
@@ -25,19 +26,17 @@ public class SchoolSystem {
         System.out.println(ANSI_GREEN + "Välkommen till skolsystemet! Skriv en siffra för att gå vidare:\n\n" +
                 ANSI_RESET + "\"1\" Skoladministratör.\n\"2\" Elev.\n\"0\" Avsluta.");
 
-        input = Integer.parseInt(SCANNER.nextLine());
+        getNumericInput();
 
-        if (input < 0 || input > 2)
+        if (input < 0 || input > 2) {
             System.out.println(ANSI_RED + "Fel vid inmatning, försök igen\n");
-
-        else {
+            getNumericInput();
+        } else {
             id = input;
-            while (input != 0) {
-                if (id == 1) {
-                    seeAdminTerminal();
-                } else if (id == 2) {
-                    seeStudentTerminal();
-                }
+            if (id == 1) {
+                seeAdminTerminal();
+            } else if (id == 2) {
+                seeStudentTerminal();
             }
         }
         System.out.println(ANSI_RED + "Systemet avslutas");
@@ -113,14 +112,18 @@ public class SchoolSystem {
         System.out.println("\"4\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
 
-        input = Integer.parseInt(SCANNER.nextLine());
+        try {
+            input = Integer.parseInt(SCANNER.nextLine());
 
-        if (input < 0 || input > 4) {
-            System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
-            seeCourses();
+            if (input < 0 || input > 4) {
+                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+                seeCourses();
 
-        } else {
-            loadCourseOptions();
+            } else {
+                loadCourseOptions();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
         }
     }
 
@@ -175,15 +178,17 @@ public class SchoolSystem {
                     "5" - Backa.
                     "0" - Avsluta.""");
 
+            try {
+                input = Integer.parseInt(SCANNER.nextLine());
 
-            input = Integer.parseInt(SCANNER.nextLine());
-
-            if (input < 0 || input > 5) {
-                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
-
-            } else {
-                loadSelectedCourseAlternatives("Engelska");
+                if (input < 0 || input > 5)
+                    System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+                else
+                    loadSelectedCourseAlternatives("Engelska");
+            } catch (NumberFormatException e) {
+                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
             }
+
         } else {
             System.out.println(ANSI_RESET + "** Engelska **\n");
 
@@ -199,14 +204,16 @@ public class SchoolSystem {
                     "1" - Backa.
                     "0" - Avsluta.""");
 
-            input = Integer.parseInt(SCANNER.nextLine());
+            try {
+                input = Integer.parseInt(SCANNER.nextLine());
 
-            if (input < 0 || input > 2) {
-                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
-            } else {
-                loadSelectedCourseAlternatives("Engelska");
+                if (input < 0 || input > 2)
+                    System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+                else
+                    loadSelectedCourseAlternatives("Engelska");
+            } catch (NumberFormatException e) {
+                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
             }
-
         }
     }
 
@@ -231,13 +238,17 @@ public class SchoolSystem {
                     "0" - Avsluta.""");
 
 
-            input = Integer.parseInt(SCANNER.nextLine());
+            try {
+                input = Integer.parseInt(SCANNER.nextLine());
 
-            if (input < 0 || input > 5) {
-                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+                if (input < 0 || input > 5) {
+                    System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
 
-            } else {
-                loadSelectedCourseAlternatives("Historia");
+                } else {
+                    loadSelectedCourseAlternatives("Historia");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
             }
         } else {
             System.out.println(ANSI_RESET + "** Historia **\n");
@@ -254,14 +265,16 @@ public class SchoolSystem {
                     "1" - Backa.
                     "0" - Avsluta.""");
 
-            input = Integer.parseInt(SCANNER.nextLine());
+            try {
+                input = Integer.parseInt(SCANNER.nextLine());
 
-            if (input < 0 || input > 2) {
-                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
-            } else {
-                loadSelectedCourseAlternatives("Historia");
+                if (input < 0 || input > 2)
+                    System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+                else
+                    loadSelectedCourseAlternatives("Historia");
+            } catch (NumberFormatException e) {
+                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
             }
-
         }
     }
 
@@ -285,14 +298,15 @@ public class SchoolSystem {
                     "5" - Backa.
                     "0" - Avsluta.""");
 
+            try {
+                input = Integer.parseInt(SCANNER.nextLine());
 
-            input = Integer.parseInt(SCANNER.nextLine());
-
-            if (input < 0 || input > 5) {
-                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
-
-            } else {
-                loadSelectedCourseAlternatives("Matematik");
+                if (input < 0 || input > 5)
+                    System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+                else
+                    loadSelectedCourseAlternatives("Matematik");
+            } catch (NumberFormatException e) {
+                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
             }
         } else {
             System.out.println(ANSI_RESET + "** Matematik **\n");
@@ -309,12 +323,15 @@ public class SchoolSystem {
                     "1" - Backa.
                     "0" - Avsluta.""");
 
-            input = Integer.parseInt(SCANNER.nextLine());
+            try {
+                input = Integer.parseInt(SCANNER.nextLine());
 
-            if (input < 0 || input > 2) {
-                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
-            } else {
-                loadSelectedCourseAlternatives("Matematik");
+                if (input < 0 || input > 2)
+                    System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+                else
+                    loadSelectedCourseAlternatives("Matematik");
+            } catch (NumberFormatException e) {
+                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
             }
         }
     }
@@ -426,23 +443,22 @@ public class SchoolSystem {
             System.out.println("Aktiva kurser:");
             printStudentCourseList(student.getName());
 
-
-        } else {
+        } else
             System.out.println("Finns ingen information om denna elev\n");
-        }
 
         System.out.println("Välj en siffra för att backa eller avsluta\n");
         System.out.println("\"1\" - Backa\n\"0\" - Avsluta");
 
+
         input = Integer.parseInt(SCANNER.nextLine());
 
-        if (input == 1) {
+        if (input == 1)
             seeStudents();
-        } else if (input == 0) {
-
+        else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
             System.exit(0);
         }
+
     }
 
     public void printTeacherInformation() {
@@ -486,16 +502,19 @@ public class SchoolSystem {
                 "4" - Byt till ADMINISTRATÖRSTERMINALEN.
                 "0" - Avsluta.""");
 
-        input = Integer.parseInt(SCANNER.nextLine());
+        try {
+            input = Integer.parseInt(SCANNER.nextLine());
 
-        if (input < 0 || input > 4) {
-            System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+            if (input < 0 || input > 4) {
+                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
 
-        } else {
-
-            while (input != 0) {
-                loadStudentOptions();
+            } else {
+                while (input != 0) {
+                    loadStudentOptions();
+                }
             }
+        } catch (NumberFormatException e) {
+            System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
         }
     }
 
@@ -573,6 +592,18 @@ public class SchoolSystem {
             }
         }
         return true;
+    }
+
+    public void getNumericInput() {
+        while (true) {
+            try {
+                input = SCANNER.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
+                SCANNER.nextLine();
+            }
+        }
     }
 
     public static final String ANSI_RED = "\u001B[31m";
