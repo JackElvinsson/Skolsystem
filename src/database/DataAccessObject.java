@@ -53,7 +53,7 @@ public class DataAccessObject {
     public Course getCourse(String courseName) {
         for (Course course : COURSE_LIST) {
             if (course.getName().equalsIgnoreCase(courseName)) {
-                return  course;
+                return course;
             }
         }
         System.err.println("Det finns ingen kurs med namnet: '" + courseName + "'.");

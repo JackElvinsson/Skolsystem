@@ -22,8 +22,6 @@ public class SchoolSystem {
         DAO.addCourse("HISTORY");
         DAO.addCourse("MATH");
 
-//----------------------------------- START -------------------------------------------------
-
         System.out.println(ANSI_GREEN + "Välkommen till skolsystemet! Skriv en siffra för att gå vidare:\n\n" +
                 ANSI_RESET + "\"1\" Skoladministratör.\n\"2\" Elev.\n\"0\" Avsluta.");
 
@@ -33,35 +31,18 @@ public class SchoolSystem {
             System.out.println(ANSI_RED + "Fel vid inmatning, försök igen\n");
 
         else {
-
             id = input;
-
-//------------------------------- STARTING LOOP -----------------------------------------------
-
             while (input != 0) {
-
-                /**
-                 * Alternativ "1" - Administratörsterminalen
-                 */
-
                 if (id == 1) {
                     seeAdminTerminal();
-
-
-                    /**
-                     * Alternativ "2" - Elevterminalen
-                     */
-
                 } else if (id == 2) {
                     seeStudentTerminal();
                 }
             }
         }
-//---------------------------- SYSTEM EXIT --------------------------------------------------
         System.out.println(ANSI_RED + "Systemet avslutas");
         System.exit(0);
     }
-//----------------------------- METHODS -----------------------------------------------------
 
     public void seeAdminTerminal() {
         System.out.println(ANSI_RESET + """
