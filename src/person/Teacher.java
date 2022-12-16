@@ -4,8 +4,8 @@ package person;
 
 public class Teacher implements Person {
 
-    private final String name;
-    private final String personalID;
+    private String name;
+    private String personalID;
 
     public Teacher(String name, String personalID) {
         this.name = name;
