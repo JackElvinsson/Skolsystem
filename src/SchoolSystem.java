@@ -26,8 +26,8 @@ public class SchoolSystem {
 
 //----------------------------------- START -------------------------------------------------
 
-        System.out.println(ANSI_RESET + "Välkommen till skolsystemet!\n" +
-                "Skriv \"1\" om du är en skoladministratör, \"2\" om du är en elev eller \"0\" för att avsluta");
+        System.out.println(ANSI_GREEN + "Välkommen till skolsystemet! Skriv en siffra för att gå vidare:\n\n" +
+                ANSI_RESET + "\"1\" Skoladministratör.\n\"2\" Elev.\n\"0\" Avsluta.");
 
         input = Integer.parseInt(scanner.nextLine());
 
@@ -47,7 +47,7 @@ public class SchoolSystem {
                  */
 
                 if (ID == 1) {
-                    seeAdminPanel();
+                    seeAdminTerminal();
 
 
                     /**
@@ -65,9 +65,9 @@ public class SchoolSystem {
     }
 //----------------------------- METHODS -----------------------------------------------------
 
-    public void seeAdminPanel() {
+    public void seeAdminTerminal() {
         System.out.println(ANSI_RESET + """
-                ** Administratörsterminalen **
+                ** ADMINISTRATÖRSTERMINALEN **
 
                 Vad vill du göra?
                 Skriv en siffra för att komma till respektive meny:
@@ -75,18 +75,23 @@ public class SchoolSystem {
                 "1" - Se kurser.
                 "2" - Se Lärarlista.
                 "3" - Se Elevlista.
+                "4" - Byt till ELEVTERMINALEN.
                 "0" - Avsluta.""");
 
-        input = Integer.parseInt(scanner.nextLine());
+        try {
+            input = Integer.parseInt(scanner.nextLine());
 
-        if (input < 0 || input > 3) {
-            System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+            if (input < 0 || input > 4) {
+                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
 
-        } else {
+            } else {
 
-            while (input != 0) {
-                loadAdminOptions();
+                while (input != 0) {
+                    loadAdminOptions();
+                }
             }
+        } catch (NumberFormatException e) {
+            System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
         }
     }
 
@@ -103,6 +108,13 @@ public class SchoolSystem {
         } else if (input == 3) {
             seeStudents(DAO.getStudentList());
             input = 20;
+
+        } else if (input == 4) {
+            System.out.println(ANSI_RED + "Byter till ** ELEVTERMINALEN **" + ANSI_RESET);
+            ID = 2;
+            seeStudentTerminal();
+            input = 20;
+
         } else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
             System.exit(0);
@@ -149,10 +161,13 @@ public class SchoolSystem {
             seeMath();
             input = 20;
 
-        } else if (input == 4) {
-
+        } else if (input == 4 && ID == 1) {
             //Backa
-            seeAdminPanel();
+            seeAdminTerminal();
+
+        } else if (input == 4 && ID == 2) {
+            //Backa
+            seeStudentTerminal();
 
         } else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
@@ -193,14 +208,25 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Engelska **\n");
 
+            System.out.println(ANSI_RESET + "Lärare: ");
             DAO.printCourseTeacher("Engelska");
+
+            System.out.println(ANSI_RESET + "\nElever: ");
             printCourseStudents("Engelska");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
                                         
                     "1" - Backa.
-                    "2" - Avsluta.""");
+                    "0" - Avsluta.""");
+
+            input = Integer.parseInt(scanner.nextLine());
+
+            if (input < 0 || input > 2) {
+                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+            } else {
+                loadSelectedCourseAlternatives("Engelska");
+            }
 
         }
     }
@@ -237,14 +263,25 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Historia **\n");
 
+            System.out.println(ANSI_RESET + "Lärare: ");
             DAO.printCourseTeacher("Historia");
+
+            System.out.println(ANSI_RESET + "\nElever: ");
             printCourseStudents("Historia");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
                                         
                     "1" - Backa.
-                    "2" - Avsluta.""");
+                    "0" - Avsluta.""");
+
+            input = Integer.parseInt(scanner.nextLine());
+
+            if (input < 0 || input > 2) {
+                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+            } else {
+                loadSelectedCourseAlternatives("Historia");
+            }
 
         }
     }
@@ -281,51 +318,66 @@ public class SchoolSystem {
         } else {
             System.out.println(ANSI_RESET + "** Matematik **\n");
 
+            System.out.println(ANSI_RESET + "Lärare: ");
             DAO.printCourseTeacher("Matematik");
+
+            System.out.println(ANSI_RESET + "\nElever: ");
             printCourseStudents("Matematik");
 
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
                                         
                     "1" - Backa.
-                    "2" - Avsluta.""");
+                    "0" - Avsluta.""");
+
+            input = Integer.parseInt(scanner.nextLine());
+
+            if (input < 0 || input > 2) {
+                System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+            } else {
+                loadSelectedCourseAlternatives("Matematik");
+            }
         }
     }
 
     public void loadSelectedCourseAlternatives(String courseName) {
-        if (input == 1) {
+        if (ID == 1 && input == 1) {
 
             System.out.println(ANSI_RESET + "Vilken elev vill du ta bort från kursen?");
 
             String studentToRemove = scanner.nextLine();
-            removeStudentFromCourse(studentToRemove, courseName);
+            DAO.removeStudentFromCourse(studentToRemove, courseName);
+            returnToSeeCourse(courseName);
 
-        } else if (input == 2) {
+        } else if (ID == 1 && input == 2) {
 
             System.out.println(ANSI_RESET + "Vilken elev vill du lägga till kursen?");
 
             String studentToAdd = scanner.nextLine();
-            addStudentToCourse(studentToAdd, courseName);
+            DAO.addStudentToCourse(studentToAdd, courseName);
+            returnToSeeCourse(courseName);
 
-        } else if (input == 3) {
+        } else if (ID == 1 && input == 3) {
 
             System.out.println("Vilken Lärare vill du ta bort från kursen?");
 
             String teacherToRemove = scanner.nextLine();
-            removeTeacherFromCourse(teacherToRemove, courseName);
+            DAO.removeTeacherFromCourse(teacherToRemove, courseName);
+            returnToSeeCourse(courseName);
 
-        } else if (input == 4) {
+        } else if (ID == 1 && input == 4) {
 
             System.out.println("Vilken lärare vill du lägga till kursen?");
 
             String teacherToAdd = scanner.nextLine();
-            addTeacherToCourse(teacherToAdd, courseName);
+            DAO.addTeacherToCourse(teacherToAdd, courseName);
+            returnToSeeCourse(courseName);
 
-        } else if (input == 5) {
+        } else if (ID == 1 && input == 5 || ID == 2 && input == 1) {
 //            input = 20;
             seeCourses();
 
-        } else if (input == 0) {
+        } else if (ID == 1 && input == 0 || ID == 2 && input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
             System.exit(0);
         }
@@ -335,18 +387,18 @@ public class SchoolSystem {
 
         System.out.println("** Lärarlista **\n");
 
-        System.out.println("Skriv in ett namn från listan för att se information\n");
+        System.out.println("Skriv in ett" + ANSI_RED + " namn " + ANSI_RESET + "från listan för att se mer information\n");
 
         DAO.printTeachers();
 
-        System.out.println("\"" + (teacherList.size() + 1) + "\" - Backa.");
+        System.out.println("\"1\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
 
         stringInput = scanner.nextLine();
 
-        if (Objects.equals(stringInput, String.valueOf(teacherList.size() + 1))) {
+        if (stringInput.equals("1")) {
             if (ID == 1) {
-                seeAdminPanel();
+                seeAdminTerminal();
             } else if (ID == 2) {
                 seeStudentTerminal();
             }
@@ -354,7 +406,7 @@ public class SchoolSystem {
             System.out.println("Stänger program");
             System.exit(0);
         } else {
-            teacherInformation();
+            printTeacherInformation();
         }
     }
 
@@ -362,18 +414,18 @@ public class SchoolSystem {
 
         System.out.println("** Elevlista **\n");
 
-        System.out.println("Skriv en siffra för att välja välja ett namn:\n");
+        System.out.println("Skriv in ett" + ANSI_RED + " namn " + ANSI_RESET + "från listan för att se mer information\n");
 
         DAO.printStudents();
 
-        System.out.println("\"" + (studentList.size() + 1) + "\" - Backa.");
+        System.out.println("\"1\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
 
         stringInput = scanner.nextLine();
 
-        if (Objects.equals(stringInput, String.valueOf(studentList.size() + 1))) {
+        if (stringInput.equals("1")) {
             if (ID == 1) {
-                seeAdminPanel();
+                seeAdminTerminal();
             } else if (ID == 2) {
                 seeStudentTerminal();
             }
@@ -381,13 +433,13 @@ public class SchoolSystem {
             System.out.println("Stänger program");
             System.exit(0);
         } else {
-            studentInformation();
+            printStudentInformation();
         }
     }
 
-    public void studentInformation() {
+    public void printStudentInformation() {
 
-        Student student  = DAO.getStudent(stringInput);
+        Student student = DAO.getStudent(stringInput);
 
         if (stringInput.equalsIgnoreCase(student.getName())) {
             System.out.println("*** Information om " + student.getName() + " ***\n");
@@ -401,7 +453,7 @@ public class SchoolSystem {
         }
 
         System.out.println("Välj en siffra för att backa eller avsluta\n");
-        System.out.println("\"1\" - Backa\n \"0\" - Avsluta");
+        System.out.println("\"1\" - Backa\n\"0\" - Avsluta");
 
         input = Integer.parseInt(scanner.nextLine());
 
@@ -414,7 +466,7 @@ public class SchoolSystem {
         }
     }
 
-    public void teacherInformation() {
+    public void printTeacherInformation() {
 
         Teacher teacher = DAO.getTeacher(stringInput);
 
@@ -434,7 +486,7 @@ public class SchoolSystem {
         input = Integer.parseInt(scanner.nextLine());
 
         if (input == 1) {
-            seeStudents(DAO.getStudentList());
+            seeTeachers(DAO.getTeacherList());
         } else if (input == 0) {
 
             System.out.println(ANSI_RED + "Systemet avslutas");
@@ -442,10 +494,9 @@ public class SchoolSystem {
         }
     }
 
-
     public void seeStudentTerminal() {
         System.out.println("""
-                ** Elevterminalen **
+                ** ELEVTERMINALEN **
                                                 
                 Vad vill du göra?
                 Skriv en siffra för att komma till respektive meny
@@ -453,80 +504,44 @@ public class SchoolSystem {
                 "1" - Se Kurser.
                 "2" - Se Lärarlista.
                 "3" - Se Elevlista.
+                "4" - Byt till ADMINISTRATÖRSTERMINALEN.
                 "0" - Avsluta.""");
 
         input = Integer.parseInt(scanner.nextLine());
 
-        seeStudentOptions();
+        if (input < 0 || input > 4) {
+            System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
+
+        } else {
+
+            while (input != 0) {
+                loadStudentOptions();
+            }
+        }
     }
 
-    public void seeStudentOptions() {
+    public void loadStudentOptions() {
         if (input == 1) {
             seeCourses();
+            input = 20;
 
         } else if (input == 2) {
             seeTeachers(DAO.getTeacherList());
+            input = 20;
 
         } else if (input == 3) {
             seeStudents(DAO.getStudentList());
+            input = 20;
+
+        } else if (input == 4) {
+            System.out.println(ANSI_RED + "Byter till ** ADMINISTRATÖRSTERMINALEN **" + ANSI_RESET);
+            ID = 1;
+            seeAdminTerminal();
+            input = 20;
 
         } else if (input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
             System.exit(0);
-        }
-    }
-
-    public void removeStudentFromCourse(String studentToRemove, String courseName) {
-
-        DAO.removeStudentFromCourse(studentToRemove, courseName);
-
-        if (courseName.equals("Engelska")) {
-            seeEnglish();
-        } else if (courseName.equals("Historia")) {
-            seeHistory();
-        } else {
-            seeMath();
-        }
-    }
-
-    public void addStudentToCourse(String studentToAdd, String courseName) {
-
-        DAO.addStudentToCourse(studentToAdd, courseName);
-
-        if (courseName.equals("Engelska")) {
-            seeEnglish();
-        } else if (courseName.equals("Historia")) {
-            seeHistory();
-        } else {
-            seeMath();
-        }
-    }
-
-    public void removeTeacherFromCourse(String teacherToRemove, String courseName) {
-
-        DAO.removeTeacherFromCourse(teacherToRemove, courseName);
-
-        if (courseName.equals("Engelska")) {
-            seeEnglish();
-        } else if (courseName.equals("Historia")) {
-            seeHistory();
-        } else {
-            seeMath();
-        }
-    }
-
-    public void addTeacherToCourse(String teacherToAdd, String courseName) {
-
-        DAO.addTeacherToCourse(teacherToAdd, courseName);
-
-        //DAO.setTeacher(courseName, teacherToAdd);
-
-        if (courseName.equals("Engelska")) {
-            seeEnglish();
-        } else if (courseName.equals("Historia")) {
-            seeHistory();
-        } else {
-            seeMath();
         }
     }
 
@@ -543,25 +558,7 @@ public class SchoolSystem {
             }
             System.out.println();
         }
-
-//        courseName = courseName.trim();
-//
-//        for (Course course : courseList) {
-//            if (course.getName().equalsIgnoreCase(courseName)) {
-//
-//                if (course.getStudentList().size() == 0) {
-//                    System.out.println(ANSI_RED + "För tillfället läser inte några elever " + courseName + ".");
-//
-//                } else {
-//                    for (int j = 0; j < course.getStudentList().size(); j++) {
-//                        System.out.println(course.getStudentList().get(j).getName());
-//                    }
-//                }
-//                System.out.println();
-//            }
-//        }
     }
-
 
     public void printStudentCourseList(String student) {
         var courses = DAO.getStudentCourses(student);
@@ -580,8 +577,29 @@ public class SchoolSystem {
         System.out.println();
     }
 
+    public void returnToSeeCourse(String courseName) {
+        if (courseName.equals("Engelska")) {
+            seeEnglish();
+        } else if (courseName.equals("Historia")) {
+            seeHistory();
+        } else {
+            seeMath();
+        }
+    }
+
+    public boolean isInputNumeric(String input) {
+        boolean isValid = true;
+        for (int i = 0; i < input.length(); i++) {
+            if (Character.isAlphabetic(input.charAt(i))) {
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
+
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREEN = "\u001B[32m";
 
 
     public static void main(String[] args) {
