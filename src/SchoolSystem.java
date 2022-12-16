@@ -587,13 +587,12 @@ public class SchoolSystem {
     }
 
     public boolean isInputNumeric(String input) {
-        boolean isValid = true;
         for (int i = 0; i < input.length(); i++) {
             if (Character.isAlphabetic(input.charAt(i))) {
-                isValid = false;
+                return false;
             }
         }
-        return isValid;
+        return true;
     }
 
     public static final String ANSI_RED = "\u001B[31m";

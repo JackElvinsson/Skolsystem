@@ -14,24 +14,13 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public class DataAccessObject {
-    private final ArrayList<Course> courseList;
-    private final ArrayList<Student> studentList;
-    private final ArrayList<Teacher> teacherList;
-    private final HashSet<Enrollment> enrollmentSet;
-    private final PersonFactory personFactory;
-    private final CourseFactory courseFactory;
+    private final ArrayList<Course> COURSE_LIST = new ArrayList<>();
+    private final ArrayList<Student> STUDENT_LIST = new ArrayList<>();
+    private final ArrayList<Teacher> TEACHER_LIST = new ArrayList<>();
+    private final HashSet<Enrollment> ENROLLMENT_SET = new HashSet<>();
+    private final PersonFactory PERSON_FACTORY = new PersonFactory();
+    private final CourseFactory COURSE_FACTORY = new CourseFactory();
 
-    public DataAccessObject() {
-
-        courseList = new ArrayList<>();
-        studentList = new ArrayList<>();
-        teacherList = new ArrayList<>();
-        enrollmentSet = new HashSet<>();
-
-        personFactory = new PersonFactory();
-        courseFactory = new CourseFactory();
-
-    }
     public void initiate() {
 
         String temp;
@@ -40,11 +29,11 @@ public class DataAccessObject {
         try(BufferedReader buf = new BufferedReader(new FileReader(file))) {
             while ((temp = buf.readLine()) != null) {
                 String[] fileInput = temp.split(",");
-                var person = personFactory.createPerson(fileInput[0], fileInput[1], fileInput[2]);
+                var person = PERSON_FACTORY.createPerson(fileInput[0], fileInput[1], fileInput[2]);
                 if (person instanceof Student)
-                    studentList.add((Student) person);
+                    STUDENT_LIST.add((Student) person);
                 else if (person instanceof Teacher)
-                    teacherList.add((Teacher) person);
+                    TEACHER_LIST.add((Teacher) person);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -52,7 +41,7 @@ public class DataAccessObject {
     }
 
     public Student getStudent(String name) {
-        for (Student student : studentList) {
+        for (Student student : STUDENT_LIST) {
             if (student.getName().equalsIgnoreCase(name)) {
                 return student;
             }
@@ -61,20 +50,8 @@ public class DataAccessObject {
         return null;
     }
 
-    /**
-     * Används inte?
-     */
-    public void addStudent(String name, String PID) {
-        if (getStudent(name) == null) {
-            studentList.add((Student) personFactory.createPerson("Student", name, PID));
-            System.out.println(name + " lades till som elev.");
-        } else {
-            System.err.println("Det finns redan en elev med namnet: '" + name + "'");
-        }
-    }
-
     public Course getCourse(String courseName) {
-        for (Course course : courseList) {
+        for (Course course : COURSE_LIST) {
             if (course.getName().equalsIgnoreCase(courseName)) {
                 return  course;
             }
@@ -84,10 +61,11 @@ public class DataAccessObject {
     }
 
     public void addCourse(String name) {
-        courseList.add(courseFactory.createCourse(name));
+        COURSE_LIST.add(COURSE_FACTORY.createCourse(name));
     }
+
     public Teacher getTeacher(String name) {
-        for (Teacher teacher :teacherList) {
+        for (Teacher teacher : TEACHER_LIST) {
             if (teacher.getName().equalsIgnoreCase(name)) {
                 return teacher;
             }
@@ -96,21 +74,9 @@ public class DataAccessObject {
         return null;
     }
 
-    /**
-     * Används inte?
-     */
-    public void addTeacher(String name, String PID) {
-        if (getTeacher(name) == null) {
-            teacherList.add((Teacher) personFactory.createPerson("Teacher", name, PID));
-            System.out.println(name + " lades till som lärare.");
-        } else {
-            System.err.println("Det finns redan en lärare  med namnet: '" + name + "'");
-        }
-    }
-
     public ArrayList<String> getStudents(String courseName) {
         ArrayList<String> studentList = new ArrayList<>();
-        for (Enrollment enrollment : enrollmentSet) {
+        for (Enrollment enrollment : ENROLLMENT_SET) {
             if (enrollment.getCourse().equalsIgnoreCase(courseName)) {
                 studentList.add(enrollment.getStudent());
             }
@@ -120,7 +86,7 @@ public class DataAccessObject {
 
     public ArrayList<String> getStudentCourses(String student) {
         ArrayList<String> courses = new ArrayList<>();
-        for (Enrollment enrollment : enrollmentSet) {
+        for (Enrollment enrollment : ENROLLMENT_SET) {
             if (enrollment.getStudent().equalsIgnoreCase(student)) {
                 courses.add(enrollment.getCourse());
             }
@@ -130,7 +96,7 @@ public class DataAccessObject {
 
     public ArrayList<String> getTeacherCourses(String teacher) {
         ArrayList<String> teacherCourses = new ArrayList<>();
-        for (Course course : courseList) {
+        for (Course course : COURSE_LIST) {
             if (course.getTeacher() != null && course.getTeacher().getName().equalsIgnoreCase(teacher)) {
                 teacherCourses.add(course.getName());
             }
@@ -139,32 +105,14 @@ public class DataAccessObject {
     }
 
     public void enrollStudent(Student student, Course course) {
-        enrollmentSet.add(new Enrollment(student.getName(), course.getName()));
-    }
-    public void removeEnrollment(String name) {
-        enrollmentSet.removeIf(enrollment -> enrollment.getStudent().equalsIgnoreCase(name));
-    }
-
-    /**
-     * Används inte?
-     */
-    public void removeStudent(String name) {
-        studentList.removeIf(student -> student.getName().equalsIgnoreCase(name));
-        removeEnrollment(name);
-    }
-
-    /**
-     * Används inte?
-     */
-    public void setTeacher(String course, String teacher) {
-        getCourse(course).setTeacher(getTeacher(teacher));
+        ENROLLMENT_SET.add(new Enrollment(student.getName(), course.getName()));
     }
 
     public void removeStudentFromCourse(String studentToRemove, String courseName) {
 
-        for (Enrollment enrollment : enrollmentSet) {
+        for (Enrollment enrollment : ENROLLMENT_SET) {
             if(enrollment.getCourse().equalsIgnoreCase(courseName)&& enrollment.getStudent().equalsIgnoreCase(studentToRemove)) {
-                enrollmentSet.remove(enrollment);
+                ENROLLMENT_SET.remove(enrollment);
                 System.out.println(ANSI_RED + studentToRemove + " togs bort från kursen: " + courseName + ".\n");
                 break;
             } else {
@@ -180,7 +128,7 @@ public class DataAccessObject {
         // Söker efter given kurs i kurslistan.
         // När kursen hittas kommer vald lärare att tas bort från vald kurs om den finns i tillagd till kursen
 
-        for (Course course : courseList) {
+        for (Course course : COURSE_LIST) {
             if (Objects.equals(courseName, course.getName())) {
 
                 try {
@@ -203,7 +151,7 @@ public class DataAccessObject {
             System.out.println(ANSI_RED + "Hittade ingen elev med namnet " + studentToAdd);
         } else {
 
-                for (Enrollment enrollment : enrollmentSet) {
+                for (Enrollment enrollment : ENROLLMENT_SET) {
                     if(enrollment.getCourse().equalsIgnoreCase(courseName)&& enrollment.getStudent().equalsIgnoreCase(studentToAdd)) {
                         System.out.println(ANSI_RED + studentToAdd + " läser redan " + courseName + "!\n");
                         break;
@@ -212,7 +160,7 @@ public class DataAccessObject {
                         System.out.println(ANSI_GREEN + studentToAdd + " lades till i kursen " + courseName + "!\n");
                     }
                 }
-                if (enrollmentSet.isEmpty()) {
+                if (ENROLLMENT_SET.isEmpty()) {
                     enrollStudent(getStudent(studentToAdd), getCourse(courseName));
                     System.out.println(ANSI_GREEN + studentToAdd + " lades till i kursen " + courseName + "!\n");
                 }
@@ -227,7 +175,7 @@ public class DataAccessObject {
         // När kursen hittas kollar metoden upp om studenten redan finns med i listan
         // Om studenten redan finns händer inget, annars läggs den till i kurslistan
 
-        for (Course course : courseList) {
+        for (Course course : COURSE_LIST) {
             if (Objects.equals(courseName, course.getName())) {
 
                 if (course.getTeacher() != null) {
@@ -235,7 +183,7 @@ public class DataAccessObject {
                     System.out.println(ANSI_RED + course.getTeacher().getName() + " Undervisar redan " + courseName + "!\n");
 
                 } else if (course.getTeacher() == null) {
-                    for (Teacher teacher : teacherList) {
+                    for (Teacher teacher : TEACHER_LIST) {
                         if (teacher.getName().equalsIgnoreCase(teacherToAdd)) {
                             course.setTeacher(teacher);
                             System.out.println(course.getTeacher().getName());
@@ -258,7 +206,7 @@ public class DataAccessObject {
     }
 
     public void printCourseTeacher(String courseName) {
-        for (Course course : courseList) {
+        for (Course course : COURSE_LIST) {
             if (course.getName().equalsIgnoreCase(courseName)) {
 
                 try {
@@ -278,45 +226,31 @@ public class DataAccessObject {
     }
 
     public void printCourses() {
-        for (int i = 0; i < courseList.size(); i++) {
-            System.out.println("\"" + (i + 1) + "\" - " + courseList.get(i).getName());
+        for (int i = 0; i < COURSE_LIST.size(); i++) {
+            System.out.println("\"" + (i + 1) + "\" - " + COURSE_LIST.get(i).getName());
         }
     }
 
     public void printStudents() {
-        for (int i = 0; !(i >= studentList.size()); i++) {
-            System.out.println(studentList.get(i).getName());
+        for (int i = 0; !(i >= STUDENT_LIST.size()); i++) {
+            System.out.println(STUDENT_LIST.get(i).getName());
         }
         System.out.println();
     }
 
     public void printTeachers() {
-        for (Teacher teacher : teacherList) {
+        for (Teacher teacher : TEACHER_LIST) {
             System.out.println(teacher.getName());
         }
         System.out.println();
     }
 
     public ArrayList<Student> getStudentList() {
-        return studentList;
-    }
-
-    /**
-     * Används inte?
-     */
-    public ArrayList<Course> getCourseList() {
-        return courseList;
+        return STUDENT_LIST;
     }
 
     public ArrayList<Teacher> getTeacherList() {
-        return teacherList;
-    }
-
-    /**
-     * Används inte?
-     */
-    public HashSet<Enrollment> getEnrollments() {
-        return enrollmentSet;
+        return TEACHER_LIST;
     }
 
     public static final String ANSI_RED = "\u001B[31m";

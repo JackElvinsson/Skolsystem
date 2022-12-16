@@ -1,19 +1,19 @@
 package database;
 
 public class Enrollment {
-    private String studentName;
-    private String courseName;
+    private final String STUDENT_NAME;
+    private final String COURSE_NAME;
 
-    public Enrollment(String studentName, String courseName) {
-        this.studentName = studentName;
-        this.courseName = courseName;
+    public Enrollment(String STUDENT_NAME, String COURSE_NAME) {
+        this.STUDENT_NAME = STUDENT_NAME;
+        this.COURSE_NAME = COURSE_NAME;
     }
 
     public String getStudent() {
-        return studentName;
+        return STUDENT_NAME;
     }
     public String getCourse() {
-        return courseName;
+        return COURSE_NAME;
     }
 
 }

@@ -14,14 +14,8 @@ public class English implements Course {
     List<Student> studentList = new ArrayList<>();
     Teacher teacher;
 
-    public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
-    }
-
-
     @Override
     public String getName() {
-
         return name;
     }
 
@@ -39,6 +33,4 @@ public class English implements Course {
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
-
-
 }
