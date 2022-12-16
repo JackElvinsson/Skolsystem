@@ -18,7 +18,6 @@ public class DataAccessObject {
     private final ArrayList<Student> studentList;
     private final ArrayList<Teacher> teacherList;
     private final HashSet<Enrollment> enrollmentSet;
-    
     private final PersonFactory personFactory;
     private final CourseFactory courseFactory;
 

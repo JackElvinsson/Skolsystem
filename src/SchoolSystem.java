@@ -4,15 +4,14 @@ import person.Student;
 import person.Teacher;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class SchoolSystem {
 
     private final DataAccessObject DAO;
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner SCANNER = new Scanner(System.in);
     private int input;
-    private int ID;
+    private int id;
     private String stringInput = "";
 
     public SchoolSystem() {
@@ -29,14 +28,14 @@ public class SchoolSystem {
         System.out.println(ANSI_GREEN + "Välkommen till skolsystemet! Skriv en siffra för att gå vidare:\n\n" +
                 ANSI_RESET + "\"1\" Skoladministratör.\n\"2\" Elev.\n\"0\" Avsluta.");
 
-        input = Integer.parseInt(scanner.nextLine());
+        input = Integer.parseInt(SCANNER.nextLine());
 
         if (input < 0 || input > 2)
             System.out.println(ANSI_RED + "Fel vid inmatning, försök igen\n");
 
         else {
 
-            ID = input;
+            id = input;
 
 //------------------------------- STARTING LOOP -----------------------------------------------
 
@@ -46,7 +45,7 @@ public class SchoolSystem {
                  * Alternativ "1" - Administratörsterminalen
                  */
 
-                if (ID == 1) {
+                if (id == 1) {
                     seeAdminTerminal();
 
 
@@ -54,7 +53,7 @@ public class SchoolSystem {
                      * Alternativ "2" - Elevterminalen
                      */
 
-                } else if (ID == 2) {
+                } else if (id == 2) {
                     seeStudentTerminal();
                 }
             }
@@ -79,7 +78,7 @@ public class SchoolSystem {
                 "0" - Avsluta.""");
 
         try {
-            input = Integer.parseInt(scanner.nextLine());
+            input = Integer.parseInt(SCANNER.nextLine());
 
             if (input < 0 || input > 4) {
                 System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -111,7 +110,7 @@ public class SchoolSystem {
 
         } else if (input == 4) {
             System.out.println(ANSI_RED + "Byter till ** ELEVTERMINALEN **" + ANSI_RESET);
-            ID = 2;
+            id = 2;
             seeStudentTerminal();
             input = 20;
 
@@ -134,7 +133,7 @@ public class SchoolSystem {
         System.out.println("\"4\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
 
-        input = Integer.parseInt(scanner.nextLine());
+        input = Integer.parseInt(SCANNER.nextLine());
 
         if (input < 0 || input > 4) {
             System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -161,11 +160,11 @@ public class SchoolSystem {
             seeMath();
             input = 20;
 
-        } else if (input == 4 && ID == 1) {
+        } else if (input == 4 && id == 1) {
             //Backa
             seeAdminTerminal();
 
-        } else if (input == 4 && ID == 2) {
+        } else if (input == 4 && id == 2) {
             //Backa
             seeStudentTerminal();
 
@@ -177,7 +176,7 @@ public class SchoolSystem {
 
     public void seeEnglish() {
 
-        if (ID == 1) {
+        if (id == 1) {
             System.out.println(ANSI_RESET + "** Engelska **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
@@ -197,7 +196,7 @@ public class SchoolSystem {
                     "0" - Avsluta.""");
 
 
-            input = Integer.parseInt(scanner.nextLine());
+            input = Integer.parseInt(SCANNER.nextLine());
 
             if (input < 0 || input > 5) {
                 System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -220,7 +219,7 @@ public class SchoolSystem {
                     "1" - Backa.
                     "0" - Avsluta.""");
 
-            input = Integer.parseInt(scanner.nextLine());
+            input = Integer.parseInt(SCANNER.nextLine());
 
             if (input < 0 || input > 2) {
                 System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -232,7 +231,7 @@ public class SchoolSystem {
     }
 
     public void seeHistory() {
-        if (ID == 1) {
+        if (id == 1) {
             System.out.println(ANSI_RESET + "** Historia **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
@@ -252,7 +251,7 @@ public class SchoolSystem {
                     "0" - Avsluta.""");
 
 
-            input = Integer.parseInt(scanner.nextLine());
+            input = Integer.parseInt(SCANNER.nextLine());
 
             if (input < 0 || input > 5) {
                 System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -275,7 +274,7 @@ public class SchoolSystem {
                     "1" - Backa.
                     "0" - Avsluta.""");
 
-            input = Integer.parseInt(scanner.nextLine());
+            input = Integer.parseInt(SCANNER.nextLine());
 
             if (input < 0 || input > 2) {
                 System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -287,7 +286,7 @@ public class SchoolSystem {
     }
 
     public void seeMath() {
-        if (ID == 1) {
+        if (id == 1) {
             System.out.println(ANSI_RESET + "** Matematik **\n");
 
             System.out.println(ANSI_RESET + "Lärare: ");
@@ -307,7 +306,7 @@ public class SchoolSystem {
                     "0" - Avsluta.""");
 
 
-            input = Integer.parseInt(scanner.nextLine());
+            input = Integer.parseInt(SCANNER.nextLine());
 
             if (input < 0 || input > 5) {
                 System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -330,7 +329,7 @@ public class SchoolSystem {
                     "1" - Backa.
                     "0" - Avsluta.""");
 
-            input = Integer.parseInt(scanner.nextLine());
+            input = Integer.parseInt(SCANNER.nextLine());
 
             if (input < 0 || input > 2) {
                 System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -341,43 +340,43 @@ public class SchoolSystem {
     }
 
     public void loadSelectedCourseAlternatives(String courseName) {
-        if (ID == 1 && input == 1) {
+        if (id == 1 && input == 1) {
 
             System.out.println(ANSI_RESET + "Vilken elev vill du ta bort från kursen?");
 
-            String studentToRemove = scanner.nextLine();
+            String studentToRemove = SCANNER.nextLine();
             DAO.removeStudentFromCourse(studentToRemove, courseName);
             returnToSeeCourse(courseName);
 
-        } else if (ID == 1 && input == 2) {
+        } else if (id == 1 && input == 2) {
 
             System.out.println(ANSI_RESET + "Vilken elev vill du lägga till kursen?");
 
-            String studentToAdd = scanner.nextLine();
+            String studentToAdd = SCANNER.nextLine();
             DAO.addStudentToCourse(studentToAdd, courseName);
             returnToSeeCourse(courseName);
 
-        } else if (ID == 1 && input == 3) {
+        } else if (id == 1 && input == 3) {
 
             System.out.println("Vilken Lärare vill du ta bort från kursen?");
 
-            String teacherToRemove = scanner.nextLine();
+            String teacherToRemove = SCANNER.nextLine();
             DAO.removeTeacherFromCourse(teacherToRemove, courseName);
             returnToSeeCourse(courseName);
 
-        } else if (ID == 1 && input == 4) {
+        } else if (id == 1 && input == 4) {
 
             System.out.println("Vilken lärare vill du lägga till kursen?");
 
-            String teacherToAdd = scanner.nextLine();
+            String teacherToAdd = SCANNER.nextLine();
             DAO.addTeacherToCourse(teacherToAdd, courseName);
             returnToSeeCourse(courseName);
 
-        } else if (ID == 1 && input == 5 || ID == 2 && input == 1) {
+        } else if (id == 1 && input == 5 || id == 2 && input == 1) {
 //            input = 20;
             seeCourses();
 
-        } else if (ID == 1 && input == 0 || ID == 2 && input == 0) {
+        } else if (id == 1 && input == 0 || id == 2 && input == 0) {
             System.out.println(ANSI_RED + "Systemet avslutas");
             System.exit(0);
         }
@@ -394,12 +393,12 @@ public class SchoolSystem {
         System.out.println("\"1\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
 
-        stringInput = scanner.nextLine();
+        stringInput = SCANNER.nextLine();
 
         if (stringInput.equals("1")) {
-            if (ID == 1) {
+            if (id == 1) {
                 seeAdminTerminal();
-            } else if (ID == 2) {
+            } else if (id == 2) {
                 seeStudentTerminal();
             }
         } else if (stringInput.equals("0")) {
@@ -421,12 +420,12 @@ public class SchoolSystem {
         System.out.println("\"1\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
 
-        stringInput = scanner.nextLine();
+        stringInput = SCANNER.nextLine();
 
         if (stringInput.equals("1")) {
-            if (ID == 1) {
+            if (id == 1) {
                 seeAdminTerminal();
-            } else if (ID == 2) {
+            } else if (id == 2) {
                 seeStudentTerminal();
             }
         } else if (stringInput.equals("0")) {
@@ -455,7 +454,7 @@ public class SchoolSystem {
         System.out.println("Välj en siffra för att backa eller avsluta\n");
         System.out.println("\"1\" - Backa\n\"0\" - Avsluta");
 
-        input = Integer.parseInt(scanner.nextLine());
+        input = Integer.parseInt(SCANNER.nextLine());
 
         if (input == 1) {
             seeStudents(DAO.getStudentList());
@@ -483,7 +482,7 @@ public class SchoolSystem {
         System.out.println("Välj en siffra för att backa eller avsluta:\n");
         System.out.println("\"1\" - Backa\n\"0\" - Avsluta");
 
-        input = Integer.parseInt(scanner.nextLine());
+        input = Integer.parseInt(SCANNER.nextLine());
 
         if (input == 1) {
             seeTeachers(DAO.getTeacherList());
@@ -507,7 +506,7 @@ public class SchoolSystem {
                 "4" - Byt till ADMINISTRATÖRSTERMINALEN.
                 "0" - Avsluta.""");
 
-        input = Integer.parseInt(scanner.nextLine());
+        input = Integer.parseInt(SCANNER.nextLine());
 
         if (input < 0 || input > 4) {
             System.out.println(ANSI_RED + "Fel vid inmatning. Försök igen\n");
@@ -535,7 +534,7 @@ public class SchoolSystem {
 
         } else if (input == 4) {
             System.out.println(ANSI_RED + "Byter till ** ADMINISTRATÖRSTERMINALEN **" + ANSI_RESET);
-            ID = 1;
+            id = 1;
             seeAdminTerminal();
             input = 20;
 
