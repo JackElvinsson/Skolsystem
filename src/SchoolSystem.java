@@ -3,7 +3,6 @@ import database.DataAccessObject;
 import person.Student;
 import person.Teacher;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class SchoolSystem {
@@ -101,11 +100,11 @@ public class SchoolSystem {
             input = 20;
 
         } else if (input == 2) {
-            seeTeachers(DAO.getTeacherList());
+            seeTeachers();
             input = 20;
 
         } else if (input == 3) {
-            seeStudents(DAO.getStudentList());
+            seeStudents();
             input = 20;
 
         } else if (input == 4) {
@@ -382,7 +381,7 @@ public class SchoolSystem {
         }
     }
 
-    public void seeTeachers(List<Teacher> teacherList) {
+    public void seeTeachers() {
 
         System.out.println("** Lärarlista **\n");
 
@@ -409,7 +408,7 @@ public class SchoolSystem {
         }
     }
 
-    public void seeStudents(List<Student> studentList) {
+    public void seeStudents() {
 
         System.out.println("** Elevlista **\n");
 
@@ -457,7 +456,7 @@ public class SchoolSystem {
         input = Integer.parseInt(SCANNER.nextLine());
 
         if (input == 1) {
-            seeStudents(DAO.getStudentList());
+            seeStudents();
         } else if (input == 0) {
 
             System.out.println(ANSI_RED + "Systemet avslutas");
@@ -485,7 +484,7 @@ public class SchoolSystem {
         input = Integer.parseInt(SCANNER.nextLine());
 
         if (input == 1) {
-            seeTeachers(DAO.getTeacherList());
+            seeTeachers();
         } else if (input == 0) {
 
             System.out.println(ANSI_RED + "Systemet avslutas");
@@ -525,11 +524,11 @@ public class SchoolSystem {
             input = 20;
 
         } else if (input == 2) {
-            seeTeachers(DAO.getTeacherList());
+            seeTeachers();
             input = 20;
 
         } else if (input == 3) {
-            seeStudents(DAO.getStudentList());
+            seeStudents();
             input = 20;
 
         } else if (input == 4) {
