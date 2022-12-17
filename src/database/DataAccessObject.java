@@ -171,32 +171,18 @@ public class DataAccessObject {
 
         teacherToAdd = teacherToAdd.trim();
 
-        // Söker efter given kurs i kurslistan.
-        // När kursen hittas kollar metoden upp om studenten redan finns med i listan
-        // Om studenten redan finns händer inget, annars läggs den till i kurslistan
-
         for (Course course : COURSE_LIST) {
             if (Objects.equals(courseName, course.getName())) {
-
                 if (course.getTeacher() != null) {
-
                     System.out.println(ANSI_RED + course.getTeacher().getName() + " Undervisar redan " + courseName + "!\n");
-
                 } else if (course.getTeacher() == null) {
                     for (Teacher teacher : TEACHER_LIST) {
                         if (teacher.getName().equalsIgnoreCase(teacherToAdd)) {
                             course.setTeacher(teacher);
-                            System.out.println(course.getTeacher().getName());
-
-                            //System.out.println(course.getTeacher().getName());
-                            // System.out.println(course.getTeacher().getCourses());
-
-//                            System.out.println(getTeacherCourses(teacher.getName()));
                             System.out.println(ANSI_GREEN + teacher.getName() + " lades till som lärare i kursen " + courseName + "!\n");
                             break;
                         }
                     }
-
                 } else {
                     System.out.println("Kunde inte hitta en lärare med namnet " + teacherToAdd);
                     break;

@@ -24,10 +24,10 @@ public class SchoolSystem {
         System.out.println(ANSI_GREEN + "Välkommen till skolsystemet! Skriv en siffra för att gå vidare:\n\n" +
                 ANSI_RESET + "\"1\" Skoladministratör.\n\"2\" Elev.\n\"0\" Avsluta.");
 
-        int input = getNumericInput(2);
-        if (input == Command.ADMIN.getValue()) {
+        id = getNumericInput(2);
+        if (id == Command.ADMIN.getValue()) {
             seeAdminTerminal();
-        } else if (input == Command.STUDENT.getValue()) {
+        } else if (id == Command.STUDENT.getValue()) {
             seeStudentTerminal();
         }
     }
@@ -335,19 +335,20 @@ public class SchoolSystem {
     }
 
     public int getNumericInput(int maxValue) {
-        int input;
+
         while (true) {
             try {
-                input = userInput.nextInt();
-                if (input >= 0 && input <= maxValue)
-                    break;
+                int input = userInput.nextInt();
+                if (input >= 0 && input <= maxValue) {
+                    userInput.nextLine();
+                    return input;
+                }
                 System.out.println(ANSI_RED + "Felaktig siffra. Försök igen\n");
             } catch (InputMismatchException e) {
                 System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
                 userInput.nextLine();
             }
         }
-        return input;
     }
 
     public static final String ANSI_RED = "\u001B[31m";
