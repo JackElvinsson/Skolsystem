@@ -7,7 +7,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class SchoolSystem {
-
     private final DataAccessObject DAO;
     private Scanner userInput = new Scanner(System.in);
     private int id;
