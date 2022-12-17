@@ -26,13 +26,13 @@ public class SchoolSystem {
 
         id = getNumericInput(2);
         if (id == Command.ADMIN.getValue()) {
-            seeAdminTerminal();
+            printAdminTerminal();
         } else if (id == Command.STUDENT.getValue()) {
-            seeStudentTerminal();
+            printStudentTerminal();
         }
     }
 
-    public void seeAdminTerminal() {
+    public void printAdminTerminal() {
         System.out.println(ANSI_RESET + """
                 ** ADMINISTRATÖRSTERMINALEN **
 
@@ -47,21 +47,16 @@ public class SchoolSystem {
 
         int input = getNumericInput(4);
 
-        if (input != Command.EXIT.getValue()) {
-            if (input == Command.COURSE_LIST.getValue()) {
-                selectCourse();
-
-            } else if (input == Command.TEACHER_LIST.getValue()) {
-                printTeachers();
-
-            } else if (input == Command.STUDENT_LIST.getValue()) {
-                printStudents();
-
-            } else if (input == Command.CHANGE_TERMINAL.getValue()) {
-                System.out.println(ANSI_RED + "Byter till ** ELEVTERMINALEN **" + ANSI_RESET);
-                id = 2;
-                seeStudentTerminal();
-            }
+        if (input == Command.COURSE_LIST.getValue()) {
+            selectCourse();
+        } else if (input == Command.TEACHER_LIST.getValue()) {
+            printTeachers();
+        } else if (input == Command.STUDENT_LIST.getValue()) {
+            printStudents();
+        } else if (input == Command.CHANGE_TERMINAL.getValue()) {
+            System.out.println(ANSI_RED + "Byter till ** ELEVTERMINALEN **" + ANSI_RESET);
+            id = Command.STUDENT.getValue();
+            printStudentTerminal();
         }
     }
 
@@ -73,10 +68,10 @@ public class SchoolSystem {
                 Skriv en siffra för att välja respektive kurs:
                 """);
         DAO.printCourses();
-        System.out.println("\"4\" - Backa.");
+        System.out.println("\"9\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
 
-        int input = getNumericInput(4);
+        int input = getNumericInput(3);
 
         if (input == Command.ENGLISH.getValue())
             printCourseInformation("Engelska");
@@ -85,9 +80,9 @@ public class SchoolSystem {
         else if (input == Command.MATH.getValue())
             printCourseInformation("Matematik");
         else if (input == Command.BACK_OPTION.getValue() && id == Command.ADMIN.getValue())
-          seeAdminTerminal();
+            printAdminTerminal();
         else if (input == Command.BACK_OPTION.getValue() && id == Command.STUDENT.getValue())
-          seeStudentTerminal();
+            printStudentTerminal();
     }
 
     public void printCourseInformation(String courseName) {
@@ -105,7 +100,7 @@ public class SchoolSystem {
                     "2" - Lägg till en elev.
                     "3" - Ta bort lärare.
                     "4" - Lägg till lärare.
-                    "5" - Backa.
+                    "9" - Backa.
                     "0" - Avsluta.""");
 
             loadSelectedCourseAlternatives(courseName);
@@ -120,7 +115,7 @@ public class SchoolSystem {
             System.out.println(ANSI_RESET + """
                     Skriv en siffra för att välja välja vad du vill göra:
                                         
-                    "1" - Backa.
+                    "9" - Backa.
                     "0" - Avsluta.""");
 
             loadSelectedCourseAlternatives(courseName);
@@ -132,11 +127,11 @@ public class SchoolSystem {
         int input;
 
         if (id == Command.ADMIN.getValue())
-            input = getNumericInput(5);
+            input = getNumericInput(4);
         else
-            input = getNumericInput(2);
+            input = getNumericInput(1);
 
-        if (id == 1 && input == 1) {
+        if (id == Command.ADMIN.getValue() && input == Command.REMOVE_STUDENT.getValue()) {
 
             System.out.println(ANSI_RESET + "Vilken elev vill du ta bort från kursen?");
 
@@ -144,7 +139,7 @@ public class SchoolSystem {
             DAO.removeStudentFromCourse(studentToRemove, courseName);
             printCourseInformation(courseName);
 
-        } else if (id == 1 && input == 2) {
+        } else if (id == Command.ADMIN.getValue() && input == Command.ADD_STUDENT.getValue()) {
 
             System.out.println(ANSI_RESET + "Vilken elev vill du lägga till kursen?");
 
@@ -152,7 +147,7 @@ public class SchoolSystem {
             DAO.addStudentToCourse(studentToAdd, courseName);
             printCourseInformation(courseName);
 
-        } else if (id == 1 && input == 3) {
+        } else if (id == Command.ADMIN.getValue() && input == Command.REMOVE_TEACHER.getValue()) {
 
             System.out.println("Vilken Lärare vill du ta bort från kursen?");
 
@@ -160,7 +155,7 @@ public class SchoolSystem {
             DAO.removeTeacherFromCourse(teacherToRemove, courseName);
             printCourseInformation(courseName);
 
-        } else if (id == 1 && input == 4) {
+        } else if (id == Command.ADMIN.getValue() && input == Command.ADD_TEACHER.getValue()) {
 
             System.out.println("Vilken lärare vill du lägga till kursen?");
 
@@ -168,10 +163,10 @@ public class SchoolSystem {
             DAO.addTeacherToCourse(teacherToAdd, courseName);
             printCourseInformation(courseName);
 
-        } else if (id == 1 && input == 5 || id == 2 && input == 1) {
+        } else if (input == Command.BACK_OPTION.getValue()) {
             selectCourse();
 
-        } else if (id == 1 && input == 0 || id == 2 && input == 0) {
+        } else if (input == Command.EXIT.getValue()) {
             System.out.println(ANSI_RED + "Systemet avslutas");
             System.exit(0);
         }
@@ -187,13 +182,13 @@ public class SchoolSystem {
 
         String input = userInput.nextLine();
 
-        if (input.equals("9")) {
+        if (input.equals(Command.BACK_OPTION.getStringValue())) {
             if (id == Command.ADMIN.getValue()) {
-                seeAdminTerminal();
+                printAdminTerminal();
             } else if (id == Command.STUDENT.getValue()) {
-                seeStudentTerminal();
+                printStudentTerminal();
             }
-        } else if (input.equals("0")) {
+        } else if (input.equals(Command.EXIT.getStringValue())) {
             System.out.println("Stänger program");
             System.exit(0);
         } else {
@@ -206,18 +201,18 @@ public class SchoolSystem {
         System.out.println("** Elevlista **\n");
         System.out.println("Skriv in ett" + ANSI_RED + " namn " + ANSI_RESET + "från listan för att se mer information\n");
         DAO.printStudents();
-        System.out.println("\"1\" - Backa.");
+        System.out.println("\"9\" - Backa.");
         System.out.println("\"0\" - Avsluta.");
 
         String input = userInput.nextLine();
 
-        if (input.equals("1")) {
+        if (input.equals(Command.BACK_OPTION.getStringValue())) {
             if (id == Command.ADMIN.getValue()) {
-                seeAdminTerminal();
+                printAdminTerminal();
             } else if (id == Command.STUDENT.getValue()) {
-                seeStudentTerminal();
+                printStudentTerminal();
             }
-        } else if (input.equals("0")) {
+        } else if (input.equals(Command.EXIT.getStringValue())) {
             System.out.println("Stänger program");
             System.exit(0);
         } else {
@@ -239,16 +234,12 @@ public class SchoolSystem {
             System.out.println("Finns ingen information om denna elev\n");
 
         System.out.println("Välj en siffra för att backa eller avsluta\n");
-        System.out.println("\"1\" - Backa\n\"0\" - Avsluta");
+        System.out.println("\"9\" - Backa\n\"0\" - Avsluta");
 
-        int input = getNumericInput(1);
+        int input = getNumericInput(0);
 
-        if (input == 1)
+        if (input == Command.BACK_OPTION.getValue())
             printStudents();
-        else if (input == 0) {
-            System.out.println(ANSI_RED + "Systemet avslutas");
-            System.exit(0);
-        }
     }
 
     public void printTeacherInformation(String teacherName) {
@@ -266,16 +257,16 @@ public class SchoolSystem {
             System.out.println("Finns ingen information om denna lärare\n");
         }
         System.out.println("Välj en siffra för att backa eller avsluta:\n");
-        System.out.println("\"1\" - Backa\n\"0\" - Avsluta");
+        System.out.println("\"9\" - Backa\n\"0\" - Avsluta");
 
-        int input = getNumericInput(1);
+        int input = getNumericInput(0);
 
-        if (input == 1) {
+        if (input == Command.BACK_OPTION.getValue()) {
             printTeachers();
         }
     }
 
-    public void seeStudentTerminal() {
+    public void printStudentTerminal() {
         System.out.println("""
                 ** ELEVTERMINALEN **
                                                 
@@ -301,8 +292,8 @@ public class SchoolSystem {
 
         } else if (input == Command.CHANGE_TERMINAL.getValue()) {
             System.out.println(ANSI_RED + "Byter till ** ADMINISTRATÖRSTERMINALEN **" + ANSI_RESET);
-            id = 1;
-            seeAdminTerminal();
+            id = Command.ADMIN.getValue();
+            printAdminTerminal();
         }
     }
 
@@ -339,7 +330,7 @@ public class SchoolSystem {
         while (true) {
             try {
                 int input = userInput.nextInt();
-                if (input >= 0 && input <= maxValue) {
+                if (input >= 0 && input <= maxValue || input == Command.BACK_OPTION.getValue()) {
                     userInput.nextLine();
                     return input;
                 }
