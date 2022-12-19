@@ -125,19 +125,14 @@ public class DataAccessObject {
 
         teacherToRemove = teacherToRemove.trim();
 
-        // Söker efter given kurs i kurslistan.
-        // När kursen hittas kommer vald lärare att tas bort från vald kurs om den finns i tillagd till kursen
-
         for (Course course : courseList) {
             if (Objects.equals(courseName, course.getName())) {
-
                 try {
                     if (course.getTeacher().getName().equalsIgnoreCase(teacherToRemove)) {
                         course.setTeacher(null);
                         System.out.println(ANSI_RED + "Lärare " + teacherToRemove + " togs bort ifrån kursen " + courseName + "!\n");
                         break;
                     }
-
                 } catch (NullPointerException e) {
                     System.out.println(ANSI_RED + "För tillfället undervisar ingen lärare kursen " + courseName);
                 }
