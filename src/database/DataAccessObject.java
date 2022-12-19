@@ -149,11 +149,11 @@ public class DataAccessObject {
                 for (Enrollment enrollment : enrollmentSet) {
                     if(enrollment.getCourse().equalsIgnoreCase(courseName)&& enrollment.getStudent().equalsIgnoreCase(studentToAdd)) {
                         System.out.println(ANSI_RED + studentToAdd + " läser redan " + courseName + "!\n");
-                        break;
                     } else {
                         enrollStudent(getStudent(studentToAdd), getCourse(courseName));
                         System.out.println(ANSI_GREEN + studentToAdd + " lades till i kursen " + courseName + "!\n");
                     }
+                    break;
                 }
                 if (enrollmentSet.isEmpty()) {
                     enrollStudent(getStudent(studentToAdd), getCourse(courseName));
