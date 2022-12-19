@@ -104,7 +104,7 @@ public class DataAccessObject {
         return teacherCourses;
     }
 
-    public void enrollStudent(Student student, Course course) {
+    private void enrollStudent(Student student, Course course) {
         enrollmentSet.add(new Enrollment(student.getName(), course.getName()));
     }
 
@@ -217,15 +217,6 @@ public class DataAccessObject {
         }
         System.out.println();
     }
-
-    public ArrayList<Student> getStudentList() {
-        return studentList;
-    }
-
-    public ArrayList<Teacher> getTeacherList() {
-        return teacherList;
-    }
-
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
 
