@@ -333,9 +333,9 @@ public class SchoolSystem {
                     userInput.nextLine();
                     return input;
                 }
-                System.out.println(ANSI_RED + "Felaktig siffra. Försök igen\n");
+                System.out.println(ANSI_RED + "Felaktig siffra. Försök igen\n" + ANSI_RESET);
             } catch (InputMismatchException e) {
-                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n");
+                System.out.println(ANSI_RED + "Endast siffror tillåtna. Försök igen!\n" + ANSI_RESET);
                 userInput.nextLine();
             }
         }
